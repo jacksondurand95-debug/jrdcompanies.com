@@ -29,12 +29,53 @@ if (contactForm) {
         // In a real implementation, this would send data to a server
         console.log('Form submitted:', formData);
         
-        // Show success message
-        alert('Thank you for your message! We will get back to you soon.');
+        // Show success message with better UX
+        showSuccessMessage();
         
         // Reset form
         contactForm.reset();
     });
+}
+
+// Show success message function
+function showSuccessMessage() {
+    // Create message element
+    const message = document.createElement('div');
+    message.className = 'form-success-message';
+    message.textContent = 'Thank you for your message! We will get back to you soon.';
+    message.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #27ae60;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    // Add animation keyframes if not already present
+    if (!document.querySelector('#successMessageStyles')) {
+        const style = document.createElement('style');
+        style.id = 'successMessageStyles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(message);
+    
+    // Remove message after 5 seconds
+    setTimeout(() => {
+        message.style.animation = 'slideIn 0.3s ease reverse';
+        setTimeout(() => message.remove(), 300);
+    }, 5000);
 }
 
 // Add scroll animation for elements
@@ -81,7 +122,7 @@ window.addEventListener('scroll', () => {
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        if (scrollY >= (sectionTop - 100)) {
+        if (window.scrollY >= (sectionTop - 100)) {
             current = section.getAttribute('id');
         }
     });
