@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JRD Companies | Minnesota Fuel & Auto Service</title>
+    <meta name="description" content="JRD Companies - Holiday Stationstores, IN N OUT Market, and Durand Automotive in Minnesota.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --jrd-orange: #E85D3B;
+            --jrd-orange-dark: #C94A2A;
+            --jrd-green: #2D5A3D;
+            --jrd-green-light: #3A7A50;
+            --jrd-charcoal: #1A1A1A;
+            --jrd-charcoal-light: #2A2A2A;
+            --jrd-cream: #F5F2EB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--jrd-charcoal);
+            color: var(--jrd-cream);
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(120deg, #161616 0%, #1f1f1f 45%, #244c34 100%);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--jrd-orange);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: var(--jrd-cream);
+            text-transform: uppercase;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            color: #9fb8a3;
+            margin-top: -4px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0.5rem 0.8rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--jrd-cream);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: var(--jrd-orange);
+            border-color: var(--jrd-orange-dark);
+            color: white;
+        }
+
+        .nav-btn.portal {
+            background: var(--jrd-green);
+            border-color: var(--jrd-green-light);
+        }
+
+        .nav-btn.portal:hover {
+            background: var(--jrd-green-light);
+        }
+
+        .nav-btn.active {
+            background: var(--jrd-orange);
+            border-color: var(--jrd-orange);
+        }
+
+        /* TICKER */
+        .ticker-bar {
+            background: linear-gradient(90deg, rgba(26,26,26,0.95), rgba(45,90,61,0.9));
+            border-bottom: 1px solid rgba(232,93,59,0.3);
+            padding: 12px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ticker-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--jrd-orange), var(--jrd-green), var(--jrd-orange));
+            animation: ticker-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes ticker-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .ticker-window {
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .ticker-track {
+            display: flex;
+            gap: 28px;
+            width: max-content;
+            animation: ticker-scroll 30s linear infinite;
+        }
+
+        .ticker-content {
+            display: inline-flex;
+            gap: 14px;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #f5f5f5;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.16);
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .ticker-symbol {
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #7cf0a2;
+            font-weight: 600;
+        }
+
+        .ticker-label {
+            color: #999;
+            font-size: 0.7rem;
+        }
+
+        .ticker-price {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .ticker-change {
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .ticker-change.up {
+            color: #7cf0a2;
+            background: rgba(124,240,162,0.15);
+        }
+
+        .ticker-change.down {
+            color: #ff9aa2;
+            background: rgba(255,154,162,0.15);
+        }
+
+        @keyframes ticker-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--jrd-charcoal) 0%, #244c34 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(232,93,59,0.15), transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(45,90,61,0.2), transparent 40%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--jrd-cream), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ABOUT SECTION */
+        .about-section {
+            padding: 4rem 2rem;
+            background: var(--jrd-charcoal);
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            text-align: center;
+        }
+
+        .about-content h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--jrd-orange);
+            margin-bottom: 1rem;
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .about-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .about-stats .stat {
+            text-align: center;
+        }
+
+        .about-stats .stat-number {
+            display: block;
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--jrd-cream);
+        }
+
+        .about-stats .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* WHY JRD SECTION */
+        .why-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--jrd-charcoal-light) 0%, #1e3325 100%);
+        }
+
+        .why-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .why-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .why-card:hover {
+            border-color: var(--jrd-orange);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+
+        .why-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .why-card h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--jrd-cream);
+            margin-bottom: 0.75rem;
+        }
+
+        .why-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        /* BUSINESSES SECTION */
+        .businesses {
+            padding: 4rem 2rem;
+            background: var(--jrd-charcoal-light);
+        }
+
+        .businesses-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--jrd-cream);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: #888;
+        }
+
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .business-card {
+            background: linear-gradient(165deg, #252525 0%, #1a1a1a 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .business-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: var(--jrd-orange);
+        }
+
+        .business-card-header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .business-card.holiday .business-card-header {
+            background: linear-gradient(135deg, #E31837, #8B0000);
+        }
+
+        .business-card.innout .business-card-header {
+            background: linear-gradient(135deg, #0066CC, #004999);
+        }
+
+        .business-card.maplewood .business-card-header {
+            background: linear-gradient(135deg, #1E3A5F, #0f1f30);
+        }
+
+        .business-logo {
+            height: 80px;
+            width: auto;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        .business-card h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .business-card .tagline {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .business-card-body {
+            padding: 1.5rem 2rem;
+        }
+
+        .business-card .address {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .business-card .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .service-tag {
+            background: rgba(232,93,59,0.15);
+            color: var(--jrd-orange);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .business-card-footer {
+            padding: 1rem 2rem;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-link {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--jrd-orange);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .live-badge {
+            background: rgba(74,222,128,0.15);
+            color: #4ADE80;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: #4ADE80;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #0a0a0a;
+            border-top: 1px solid #222;
+            padding: 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-brand img {
+            height: 40px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--jrd-orange);
+        }
+
+        .footer-copy {
+            color: #444;
+            font-size: 0.85rem;
+            width: 100%;
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #222;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .business-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .header-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.3rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                font-size: 0.65rem;
+                padding: 0.4rem 0.6rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-content {
+                padding: 1rem;
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .businesses {
+                padding: 2rem 1rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Gate -->
+    <div id="passwordGate" style="position:fixed;inset:0;background:linear-gradient(135deg,#1A1A1A 0%,#244c34 100%);z-index:9999;display:flex;align-items:center;justify-content:center;">
+        <div style="background:#252525;border-radius:16px;padding:3rem;max-width:400px;width:90%;border:1px solid #333;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+            <div style="text-align:center;margin-bottom:2rem;">
+                <img src="/assets/images/jrd-logo.png" alt="JRD Companies" style="height:60px;margin-bottom:1rem;">
+                <h2 style="font-family:'Oswald',sans-serif;color:#F5F2EB;font-size:1.5rem;letter-spacing:2px;text-transform:uppercase;">Site Access</h2>
+                <p style="color:#888;font-size:0.9rem;margin-top:0.5rem;">Enter password to continue</p>
+            </div>
+            <div id="gateError" style="background:rgba(237,28,36,0.15);border:1px solid #ED1C24;color:#ED1C24;padding:0.75rem;border-radius:8px;margin-bottom:1rem;display:none;text-align:center;font-size:0.9rem;">Incorrect password</div>
+            <input type="password" id="gatePassword" placeholder="Enter password" style="width:100%;padding:1rem;border:2px solid #444;border-radius:8px;font-size:1rem;background:#1A1A1A;color:#F5F2EB;margin-bottom:1rem;" autofocus>
+            <button onclick="checkGatePassword()" style="width:100%;background:#E85D3B;color:white;border:none;padding:1rem;font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-radius:8px;cursor:pointer;">Enter Site</button>
+        </div>
+    </div>
+    <script>
+        // jackd = full access (site + portal), maplewood = site only
+        const FULL_ACCESS = 'jackd';
+        const SITE_ONLY = 'maplewood';
+        if (sessionStorage.getItem('jrd_access') === 'granted' || sessionStorage.getItem('jrd_access') === 'full') {
+            document.getElementById('passwordGate').style.display = 'none';
+        }
+        document.getElementById('gatePassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkGatePassword();
+        });
+        function checkGatePassword() {
+            const pw = document.getElementById('gatePassword').value.toLowerCase().trim();
+            if (pw === FULL_ACCESS) {
+                sessionStorage.setItem('jrd_access', 'full');
+                sessionStorage.setItem('portal_auth', 'true');
+                document.getElementById('passwordGate').style.display = 'none';
+            } else if (pw === SITE_ONLY) {
+                sessionStorage.setItem('jrd_access', 'granted');
+                document.getElementById('passwordGate').style.display = 'none';
+            } else {
+                document.getElementById('gateError').style.display = 'block';
+                document.getElementById('gatePassword').value = '';
+                document.getElementById('gatePassword').focus();
+            }
+        }
+    </script>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="/assets/images/jrd-logo.png" alt="JRD Companies" class="logo-img">
+                <div class="logo-text">
+                    JRD Companies
+                    <span>Minnesota Fuel & Auto Service</span>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="/" class="nav-btn active">Home</a>
+                <a href="/holiday.html" class="nav-btn">Holiday</a>
+                <a href="https://white-mud-083737710.2.azurestaticapps.net" class="nav-btn" target="_blank">IN N OUT</a>
+                <a href="https://proud-pond-0f728d010.4.azurestaticapps.net" class="nav-btn" target="_blank">Durand Auto</a>
+                <a href="/portal/" class="nav-btn portal">Portal</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="ticker-bar">
+        <div class="ticker-glow"></div>
+        <div class="ticker-window">
+            <div id="tickerTrack" class="ticker-track"></div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>JRD Companies</h1>
+            <p>Fuel stations and auto service you can trust. Serving Minnesota communities with quality products and honest service since 2010.</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="about-container">
+            <div class="about-content">
+                <h2>Minnesota-Owned. Community-Focused.</h2>
+                <p>JRD Companies operates fuel stations and an auto repair shop across the Twin Cities metro area. We believe in fair prices, quality products, and treating every customer like a neighbor.</p>
+                <div class="about-stats">
+                    <div class="stat">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Locations</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Fuel Available</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why JRD Section -->
+    <section class="why-section">
+        <div class="why-container">
+            <div class="section-header">
+                <h2>Why Choose JRD</h2>
+                <p>What sets us apart from the rest</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">$</div>
+                    <h3>Fair Pricing</h3>
+                    <p>Competitive fuel prices and honest repair estimates. No hidden fees, no surprises.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">LOCAL</div>
+                    <h3>Family Owned</h3>
+                    <p>Locally owned and operated since 2010. We treat every customer like a neighbor.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">★</div>
+                    <h3>Quality Service</h3>
+                    <p>ASE certified technicians and premium fuel products you can trust.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">24/7</div>
+                    <h3>Convenient Hours</h3>
+                    <p>Open 24/7 for fuel, with extended hours for auto service. We're here when you need us.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="businesses">
+        <div class="businesses-container">
+            <div class="section-header">
+                <h2>Our Businesses</h2>
+                <p>Click to view locations, services, and live fuel prices</p>
+            </div>
+
+            <div class="business-grid">
+                <!-- Holiday -->
+                <a href="/holiday.html" class="business-card holiday">
+                    <div class="business-card-header">
+                        <img src="/assets/images/holiday-logo.png" alt="Holiday Stationstores" class="business-logo">
+                        <h3>Holiday Stationstores</h3>
+                        <div class="tagline">Store #3851 - Lakeville</div>
+                    </div>
+                    <div class="business-card-body">
+                        <div class="address">
+                            <span class="loc-icon">LOC</span>
+                            <span>16255 Ipava Ave, Lakeville, MN 55044</span>
+                        </div>
+                        <div class="services">
+                            <span class="service-tag">Fuel</span>
+                            <span class="service-tag">C-Store</span>
+                            <span class="service-tag">24/7</span>
+                            <span class="service-tag">ATM</span>
+                        </div>
+                    </div>
+                    <div class="business-card-footer">
+                        <span class="view-link">View Gas Prices →</span>
+                        <span class="live-badge"><span class="live-dot"></span> Live Prices</span>
+                    </div>
+                </a>
+
+                <!-- IN N OUT -->
+                <a href="https://white-mud-083737710.2.azurestaticapps.net" target="_blank" class="business-card innout">
+                    <div class="business-card-header">
+                        <img src="/assets/images/in-n-out-logo.png" alt="IN N OUT Market" class="business-logo">
+                        <h3>IN N OUT Market</h3>
+                        <div class="tagline">Minnoco Fuel - Maplewood</div>
+                    </div>
+                    <div class="business-card-body">
+                        <div class="address">
+                            <span class="loc-icon">LOC</span>
+                            <span>743 Century Ave N, Maplewood, MN 55119</span>
+                        </div>
+                        <div class="services">
+                            <span class="service-tag">Minnoco Fuel</span>
+                            <span class="service-tag">Convenience</span>
+                            <span class="service-tag">Lottery</span>
+                        </div>
+                    </div>
+                    <div class="business-card-footer">
+                        <span class="view-link">View Gas Prices →</span>
+                        <span class="live-badge"><span class="live-dot"></span> Live Prices</span>
+                    </div>
+                </a>
+
+                <!-- Durand Automotive -->
+                <a href="https://proud-pond-0f728d010.4.azurestaticapps.net" target="_blank" class="business-card maplewood">
+                    <div class="business-card-header">
+                        <img src="/assets/images/durand-automotive-logo.png" alt="Durand Automotive" class="business-logo">
+                        <h3>Durand Automotive</h3>
+                        <div class="tagline">Honest Auto Repair</div>
+                    </div>
+                    <div class="business-card-body">
+                        <div class="address">
+                            <span class="loc-icon">LOC</span>
+                            <span>2727 Minnehaha Ave E, Maplewood, MN 55119</span>
+                        </div>
+                        <div class="services">
+                            <span class="service-tag">ASE Certified</span>
+                            <span class="service-tag">Full Service</span>
+                            <span class="service-tag">Diagnostics</span>
+                        </div>
+                    </div>
+                    <div class="business-card-footer">
+                        <span class="view-link">View Services →</span>
+                        <span class="live-badge"><span class="live-dot"></span> Open</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="/assets/images/jrd-logo.png" alt="JRD Companies">
+            </div>
+            <div class="footer-links">
+                <a href="/holiday.html">Holiday #3851</a>
+                <a href="https://white-mud-083737710.2.azurestaticapps.net" target="_blank">IN N OUT Market</a>
+                <a href="https://proud-pond-0f728d010.4.azurestaticapps.net" target="_blank">Durand Automotive</a>
+                <a href="/portal/">Portal</a>
+            </div>
+            <p class="footer-copy">&copy; 2024 JRD Companies. Serving Minnesota with quality fuel and auto service.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Oil & Energy Market Tickers
+        const TICKER_ITEMS = [
+            { symbol: 'WTI', label: 'Crude Oil', price: 71.24, change: 1.32 },
+            { symbol: 'BRENT', label: 'Brent Crude', price: 74.89, change: 0.87 },
+            { symbol: 'RBOB', label: 'Gasoline Futures', price: 2.134, change: -0.024 },
+            { symbol: 'XOM', label: 'Exxon Mobil', price: 113.45, change: 1.56 },
+            { symbol: 'CVX', label: 'Chevron', price: 148.92, change: 2.18 },
+            { symbol: 'HO', label: 'Heating Oil', price: 2.287, change: 0.031 },
+            { symbol: 'NATGAS', label: 'Natural Gas', price: 3.142, change: -0.089 },
+            { symbol: 'XLE', label: 'Energy ETF', price: 89.67, change: 0.94 }
+        ];
+
+        function renderTicker() {
+            const track = document.getElementById('tickerTrack');
+            if (!track) return;
+
+            const makeContent = () => {
+                const block = document.createElement('div');
+                block.className = 'ticker-content';
+
+                TICKER_ITEMS.forEach(item => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'ticker-item';
+
+                    const symbol = document.createElement('span');
+                    symbol.className = 'ticker-symbol';
+                    symbol.textContent = item.symbol;
+
+                    const label = document.createElement('span');
+                    label.className = 'ticker-label';
+                    label.textContent = item.label;
+
+                    const price = document.createElement('span');
+                    price.className = 'ticker-price';
+                    price.textContent = '$' + item.price.toFixed(2);
+
+                    const change = document.createElement('span');
+                    change.className = 'ticker-change ' + (item.change > 0 ? 'up' : 'down');
+                    change.textContent = (item.change > 0 ? '+' : '') + item.change.toFixed(2);
+
+                    wrapper.appendChild(symbol);
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(price);
+                    wrapper.appendChild(change);
+                    block.appendChild(wrapper);
+                });
+
+                return block;
+            };
+
+            // Add two copies for seamless loop
+            track.appendChild(makeContent());
+            track.appendChild(makeContent());
+        }
+
+        document.addEventListener('DOMContentLoaded', renderTicker);
+    </script>
+
+    <!-- Jack2 Widget -->
+    <script src="/assets/js/jack2-widget.js"></script>
+</body>
+</html>
