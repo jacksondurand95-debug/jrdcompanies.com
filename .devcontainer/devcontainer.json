@@ -1,4 +1,12 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {}
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "features": {},
+  "mounts": [
+    "source=${env:HOME}/.ms_app_config.json,target=/root/.ms_app_config.json,type=bind,consistency=cached",
+    "source=${env:HOME}/.ms_daemon_token.json,target=/root/.ms_daemon_token.json,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": "pip3 install --user msal requests && pip install -r requirements.txt || true"
 }
