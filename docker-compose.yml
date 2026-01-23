@@ -1,0 +1,14 @@
+services:
+  onedrive:
+    build: .
+    container_name: jrd-onedrive
+    volumes:
+      - ${HOME}/.ms_app_config.json:/root/.ms_app_config.json:ro
+      - ${HOME}/.ms_daemon_token.json:/root/.ms_daemon_token.json:rw
+      - ./onedrive_data:/app/data
+    environment:
+      - MS_CONFIG_PATH=/root/.ms_app_config.json
+      - MS_TOKEN_PATH=/root/.ms_daemon_token.json
+    stdin_open: true
+    tty: true
+    command: python onedrive_access.py
