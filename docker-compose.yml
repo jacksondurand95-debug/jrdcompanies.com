@@ -3,8 +3,8 @@ services:
     build: .
     container_name: jrd-onedrive
     volumes:
-      - ~/.ms_app_config.json:/root/.ms_app_config.json:ro
-      - ~/.ms_daemon_token.json:/root/.ms_daemon_token.json:rw
+      - ${HOME}/.ms_app_config.json:/root/.ms_app_config.json:ro
+      - ${HOME}/.ms_daemon_token.json:/root/.ms_daemon_token.json:rw
       - ./onedrive_data:/app/data
     environment:
       - MS_CONFIG_PATH=/root/.ms_app_config.json
