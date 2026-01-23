@@ -2,6 +2,9 @@ services:
   onedrive:
     build: .
     container_name: jrd-onedrive
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
     volumes:
       - ${HOME}/.ms_app_config.json:/root/.ms_app_config.json:ro
       - ${HOME}/.ms_daemon_token.json:/root/.ms_daemon_token.json:rw
@@ -9,6 +12,10 @@ services:
     environment:
       - MS_CONFIG_PATH=/root/.ms_app_config.json
       - MS_TOKEN_PATH=/root/.ms_daemon_token.json
-    stdin_open: true
-    tty: true
-    command: python onedrive_access.py
+      - DEBUG=false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

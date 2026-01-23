@@ -1,0 +1,11 @@
+# Web framework
+flask==3.0.0
+flask-cors==4.0.0
+gunicorn==21.2.0
+
+# Microsoft Graph API / OneDrive integration
+msal==1.25.0
+requests==2.31.0
+
+# Utilities
+python-dotenv==1.0.0
