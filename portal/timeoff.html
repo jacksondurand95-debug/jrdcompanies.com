@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Request Time Off | JRD Companies Portal</title>
+  <link rel="icon" type="image/png" href="../jrd-assets/jrd-companies-chrome.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#070707;
+      --panel:#101010;
+      --panel2:#151515;
+      --cream:#f3eee3;
+      --cream2:#d7d1c5;
+      --muted:#a9a295;
+      --orange:#e85d3b;
+      --orange2:#c94a2a;
+      --green:#2d5a3d;
+      --green2:#3a7a50;
+      --steel:#8a8f9a;
+      --stroke:rgba(255,255,255,.08);
+      --radius:14px;
+      --radius2:18px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:Roboto,system-ui,sans-serif;
+      color:var(--cream);
+      background:var(--bg);
+      min-height:100vh;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      background:
+        radial-gradient(ellipse 120% 70% at 20% 20%, rgba(232,93,59,.14), transparent 55%),
+        radial-gradient(ellipse 90% 60% at 80% 70%, rgba(58,122,80,.16), transparent 50%),
+        radial-gradient(ellipse 160% 120% at 50% 50%, rgba(0,0,0,.55), transparent 70%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0px, rgba(255,255,255,.035) 2px, transparent 2px, transparent 10px),
+        radial-gradient(circle at 50% 50%, #0a0a0a 0%, #050505 65%);
+      background-attachment:fixed;
+    }
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      opacity:.28;
+      mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23n)' opacity='.75'/%3E%3C/svg%3E");
+    }
+
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1100px, calc(100% - 48px)); margin:0 auto; padding:40px 0 80px;}
+
+    .page-header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding-bottom:30px;
+      border-bottom:1px solid var(--stroke);
+      margin-bottom:50px;
+    }
+    .back-btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--stroke);
+      color:var(--muted);
+      transition:color .2s, border-color .2s, transform .2s;
+    }
+    .back-btn:hover{
+      color:var(--cream);
+      border-color:var(--orange);
+      transform:translateX(-3px);
+    }
+    .page-title{
+      font-family:Oswald,sans-serif;
+      font-size:1.5rem;
+      letter-spacing:3px;
+      text-transform:uppercase;
+    }
+
+    /* Company Selection */
+    #companySelect{display:block}
+    #formView{display:none}
+
+    .intro{
+      text-align:center;
+      margin-bottom:50px;
+    }
+    .intro h2{
+      font-family:Oswald,sans-serif;
+      font-size:2rem;
+      letter-spacing:4px;
+      text-transform:uppercase;
+      margin-bottom:14px;
+      background:linear-gradient(135deg, var(--cream), var(--cream2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .intro p{
+      color:var(--muted);
+      font-size:1.05rem;
+      max-width:480px;
+      margin:0 auto;
+    }
+
+    .company-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:28px;
+    }
+
+    .company-card{
+      position:relative;
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius2);
+      padding:40px 28px;
+      text-align:center;
+      transition:transform .22s, border-color .22s, box-shadow .22s;
+      overflow:hidden;
+      cursor:pointer;
+    }
+    .company-card::before{
+      content:"";
+      position:absolute;
+      top:0;left:0;right:0;
+      height:3px;
+      background:var(--orange);
+      transform:scaleX(0);
+      transition:transform .25s;
+    }
+    .company-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 28px 70px rgba(0,0,0,.5);
+    }
+    .company-card:hover::before{transform:scaleX(1)}
+    .company-card.holiday:hover{border-color:rgba(232,93,59,.35)}
+    .company-card.holiday::before{background:var(--orange)}
+    .company-card.innout:hover{border-color:rgba(58,122,80,.35)}
+    .company-card.innout::before{background:var(--green2)}
+    .company-card.durand:hover{border-color:rgba(138,143,154,.35)}
+    .company-card.durand::before{background:var(--steel)}
+
+    .company-logo{
+      height:90px;
+      width:auto;
+      max-width:160px;
+      margin:0 auto 24px;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 20px rgba(0,0,0,.45));
+      transition:transform .22s;
+    }
+    .company-card:hover .company-logo{transform:scale(1.08)}
+
+    .company-name{
+      font-family:Oswald,sans-serif;
+      font-size:1.15rem;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--cream);
+      margin-bottom:6px;
+    }
+    .company-loc{
+      color:var(--muted);
+      font-size:.85rem;
+      margin-bottom:24px;
+    }
+
+    .select-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      padding:16px 24px;
+      border-radius:12px;
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-weight:700;
+      font-size:.95rem;
+      color:#0b0b0b;
+      transition:transform .18s, box-shadow .18s, filter .18s;
+      cursor:pointer;
+      border:none;
+    }
+    .select-btn.orange{
+      background:linear-gradient(180deg, var(--orange), var(--orange2));
+      box-shadow:0 10px 30px rgba(232,93,59,.25);
+    }
+    .select-btn.green{
+      background:linear-gradient(180deg, var(--green2), var(--green));
+      box-shadow:0 10px 30px rgba(58,122,80,.25);
+    }
+    .select-btn.steel{
+      background:linear-gradient(180deg, var(--steel), #6a6f7a);
+      box-shadow:0 10px 30px rgba(138,143,154,.2);
+    }
+    .select-btn:hover{
+      transform:translateY(-2px);
+      filter:brightness(1.08);
+    }
+    .select-btn svg{
+      width:18px;
+      height:18px;
+      stroke:currentColor;
+      stroke-width:2;
+      fill:none;
+    }
+
+    /* Form View */
+    .form-card{
+      max-width:600px;
+      margin:0 auto;
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius2);
+      overflow:hidden;
+    }
+
+    .form-header{
+      padding:32px;
+      border-bottom:1px solid var(--stroke);
+      background:rgba(232,93,59,.04);
+      text-align:center;
+    }
+    .form-header img{
+      height:50px;
+      width:auto;
+      margin:0 auto 18px;
+      filter:drop-shadow(0 6px 16px rgba(0,0,0,.4));
+    }
+    .form-header h2{
+      font-family:Oswald,sans-serif;
+      font-size:1.4rem;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:var(--cream);
+    }
+    .form-header p{
+      color:var(--muted);
+      font-size:.9rem;
+      margin-top:6px;
+    }
+    .form-header .company-badge{
+      display:inline-block;
+      margin-top:14px;
+      padding:8px 16px;
+      border-radius:8px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      font-family:JetBrains Mono, monospace;
+      font-size:.8rem;
+      color:var(--orange);
+    }
+
+    .form-body{
+      padding:32px;
+    }
+
+    .form-group{
+      margin-bottom:24px;
+    }
+    .form-group label{
+      display:block;
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-size:.9rem;
+      color:var(--cream);
+      margin-bottom:10px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+      width:100%;
+      padding:16px 18px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.35);
+      color:var(--cream);
+      font-size:1rem;
+      font-family:inherit;
+      outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus{
+      border-color:rgba(232,93,59,.5);
+      box-shadow:0 0 0 3px rgba(232,93,59,.1);
+    }
+    .form-group textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+    .form-group select{
+      cursor:pointer;
+      appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a9a295' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 16px center;
+    }
+    .form-group select option{
+      background:var(--panel);
+      color:var(--cream);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder{
+      color:var(--muted);
+    }
+
+    .form-actions{
+      display:flex;
+      gap:16px;
+      margin-top:32px;
+    }
+    .form-actions button{
+      flex:1;
+      padding:18px;
+      border-radius:12px;
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-weight:700;
+      font-size:1rem;
+      cursor:pointer;
+      transition:transform .18s, box-shadow .18s;
+      border:none;
+    }
+    .btn-cancel{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke) !important;
+      color:var(--muted);
+    }
+    .btn-cancel:hover{
+      color:var(--cream);
+      border-color:rgba(255,255,255,.15) !important;
+    }
+    .btn-submit{
+      background:linear-gradient(180deg, var(--orange), var(--orange2));
+      color:#0b0b0b;
+      box-shadow:0 12px 35px rgba(232,93,59,.25);
+    }
+    .btn-submit:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 45px rgba(232,93,59,.35);
+    }
+
+    .success-msg{
+      display:none;
+      text-align:center;
+      padding:50px 32px;
+    }
+    .success-msg svg{
+      width:70px;
+      height:70px;
+      stroke:var(--green2);
+      stroke-width:1.5;
+      fill:none;
+      margin-bottom:24px;
+    }
+    .success-msg h3{
+      font-family:Oswald,sans-serif;
+      font-size:1.5rem;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+    .success-msg p{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    @media(max-width:800px){
+      .company-grid{grid-template-columns:1fr}
+      .form-body{padding:24px}
+      .form-actions{flex-direction:column}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="page-header">
+      <a class="back-btn" href="index.html" aria-label="Back to Portal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
+      <h1 class="page-title">Request Time Off</h1>
+    </header>
+
+    <!-- Company Selection -->
+    <div id="companySelect">
+      <div class="intro">
+        <h2>Pick Your Store</h2>
+        <p>Where do you work?</p>
+      </div>
+
+      <div class="company-grid">
+
+        <div class="company-card holiday" onclick="showForm('holiday', 'Holiday Stationstores', 'Store #3851 - Lakeville')">
+          <img src="../jrd-assets/holiday-logo.png" alt="Holiday" class="company-logo">
+          <div class="company-name">Holiday Stationstores</div>
+          <div class="company-loc">Store #3851 - Lakeville</div>
+          <button class="select-btn orange">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Request Time Off
+          </button>
+        </div>
+
+        <div class="company-card innout" onclick="showForm('innout', 'IN N OUT Market', 'Maplewood')">
+          <img src="../jrd-assets/in-n-out-logo.png" alt="IN N OUT" class="company-logo">
+          <div class="company-name">IN N OUT Market</div>
+          <div class="company-loc">Maplewood</div>
+          <button class="select-btn green">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Request Time Off
+          </button>
+        </div>
+
+        <div class="company-card durand" onclick="showForm('durand', 'Durand Automotive', 'Maplewood')">
+          <img src="../jrd-assets/durand-automotive-logo.png" alt="Durand Automotive" class="company-logo">
+          <div class="company-name">Durand Automotive</div>
+          <div class="company-loc">Maplewood</div>
+          <button class="select-btn steel">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Request Time Off
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Time Off Request Form -->
+    <div id="formView">
+      <div class="form-card">
+        <div class="form-header">
+          <img src="../jrd-assets/jrd-companies-chrome.png" alt="JRD Companies">
+          <h2>Time Off Request</h2>
+          <p>Fill this out and hit send</p>
+          <div class="company-badge" id="companyBadge">Holiday Stationstores</div>
+        </div>
+
+        <div class="form-body" id="formBody">
+          <form id="timeoffForm" onsubmit="submitForm(event)">
+            <input type="hidden" id="companyField" name="company" value="">
+
+            <div class="form-group">
+              <label for="reason">What's it for?</label>
+              <select id="reason" name="reason" required>
+                <option value="">Why?</option>
+                <option value="Vacation">Vacation</option>
+                <option value="Sick Leave">Sick Leave</option>
+                <option value="Personal Day">Personal Day</option>
+                <option value="Family Emergency">Family Emergency</option>
+                <option value="Medical Appointment">Medical Appointment</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="requestDate">When?</label>
+              <input type="text" id="requestDate" name="date" placeholder="e.g. Jan 15-17, 2026" required>
+            </div>
+
+            <div class="form-group">
+              <label for="comments">Anything else?</label>
+              <textarea id="comments" name="comments" placeholder="Optional"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" onclick="hideForm()">Cancel</button>
+              <button type="submit" class="btn-submit">Send It</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="success-msg" id="successMsg">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          <h3>Sent</h3>
+          <p>Your request is in. You'll hear back by email.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let selectedCompany = '';
+
+    function showForm(companyId, companyName, location){
+      selectedCompany = companyName;
+      document.getElementById('companySelect').style.display = 'none';
+      document.getElementById('formView').style.display = 'block';
+      document.getElementById('companyBadge').textContent = companyName + ' - ' + location;
+      document.getElementById('companyField').value = companyName;
+      document.getElementById('formBody').style.display = 'block';
+      document.getElementById('successMsg').style.display = 'none';
+    }
+
+    function hideForm(){
+      document.getElementById('companySelect').style.display = 'block';
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('timeoffForm').reset();
+    }
+
+    function submitForm(e){
+      e.preventDefault();
+
+      const form = document.getElementById('timeoffForm');
+      const data = new FormData(form);
+
+      const company = data.get('company');
+      const reason = data.get('reason');
+      const date = data.get('date');
+      const comments = data.get('comments') || '(none)';
+
+      const subject = encodeURIComponent('Time Off Request - ' + company);
+      const body = encodeURIComponent(
+        'TIME OFF REQUEST\n' +
+        '================\n\n' +
+        'Company: ' + company + '\n' +
+        'Reason: ' + reason + '\n' +
+        'Date(s) Requested: ' + date + '\n\n' +
+        'Additional Comments:\n' + comments + '\n\n' +
+        '---\n' +
+        'Submitted via JRD Companies Portal'
+      );
+
+      window.location.href = 'mailto:jdurand@jrdcompanies.com?subject=' + subject + '&body=' + body;
+
+      document.getElementById('formBody').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+
+      form.reset();
+    }
+  </script>
+
+</body>
+</html>
