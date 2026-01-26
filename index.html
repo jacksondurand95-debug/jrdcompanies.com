@@ -126,7 +126,7 @@
       min-width:260px;
     }
     .brand-logo{
-      width:140px; height:auto;
+      width:220px; height:auto;
       filter: drop-shadow(0 10px 24px rgba(0,0,0,.55));
     }
     .brand-name{
@@ -347,9 +347,9 @@
     .collage-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:12px;
+      gap:16px;
       flex:1;
-      min-height:260px;
+      min-height:380px;
     }
     .collage-tile{
       border-radius:18px;
@@ -358,15 +358,21 @@
       display:flex; align-items:center; justify-content:center;
       overflow:hidden;
       position:relative;
+      padding:20px;
     }
     .collage-tile img{
-      width:78%;
-      opacity:.8;
+      width:92%;
+      max-height:140px;
+      object-fit:contain;
+      opacity:.92;
       filter: drop-shadow(0 16px 32px rgba(0,0,0,.55));
     }
     .collage-tile.big{
       grid-column: 1 / -1;
-      min-height:120px;
+      min-height:160px;
+    }
+    .collage-tile.big img{
+      max-height:120px;
     }
 
     .mini-badge{
@@ -547,17 +553,17 @@
       display:flex; gap:12px; align-items:flex-start;
     }
     .loc-logo{
-      width:56px; height:56px;
-      border-radius:16px;
+      width:90px; height:90px;
+      border-radius:18px;
       border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.05);
       display:grid; place-items:center;
       overflow:hidden;
       flex:0 0 auto;
     }
-    .loc-logo img{width:78%; height:auto; opacity:.92}
-    .loc-logo.durand-logo{width:48px; height:48px}
-    .loc-logo.durand-logo img{width:70%}
+    .loc-logo img{width:85%; height:auto; opacity:.92}
+    .loc-logo.durand-logo{width:80px; height:80px}
+    .loc-logo.durand-logo img{width:75%}
     .loc-title h3{
       font-size:1.12rem;
       line-height:1.1;
