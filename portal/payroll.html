@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
   <style>
     :root{
@@ -727,6 +728,10 @@
             <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             Send Timesheet
           </button>
+          <button class="history-btn" id="btnDailyExcel" type="button" style="border-color:rgba(58,122,80,.35);color:var(--green2)">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+            Daily Excel Report
+          </button>
         </div>
         <div id="historyTable"></div>
       </div>
@@ -1098,6 +1103,77 @@
     const subject = 'Timesheet - ' + empName + ' - ' + todayStr();
     const mailto = 'mailto:jdurand@jrdcompanies.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     window.location.href = mailto;
+  });
+
+  // --- DAILY EXCEL REPORT ---
+  function generateDailyExcel(autoEmail){
+    const punches = getPunches();
+    const today = todayStr();
+    const todayPunches = punches.filter(function(p){ return p.date === today; })
+      .sort(function(a,b){ return a.clockIn.localeCompare(b.clockIn); });
+
+    if(!todayPunches.length){
+      if(!autoEmail) alert('No punches recorded today.');
+      return;
+    }
+
+    // Build worksheet data
+    var wsData = [
+      ['JRD COMPANIES - DAILY TIME REPORT'],
+      ['Employee:', empName],
+      ['Date:', new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})],
+      ['Generated:', new Date().toLocaleString()],
+      [],
+      ['#', 'Clock In', 'Clock Out', 'Hours', 'Minutes', 'Location']
+    ];
+
+    var totalMin = 0;
+    todayPunches.forEach(function(p, i){
+      var inTime = formatTime12(new Date(p.clockIn));
+      var outTime = p.clockOut ? formatTime12(new Date(p.clockOut)) : 'In progress';
+      var diff = p.clockOut ? diffHoursMinutes(p.clockIn, p.clockOut) : diffHoursMinutes(p.clockIn, new Date().toISOString());
+      totalMin += diff.total;
+      wsData.push([i+1, inTime, outTime, diff.h, diff.m, p.location || '']);
+    });
+
+    wsData.push([]);
+    wsData.push(['', '', 'TOTAL', Math.floor(totalMin/60), totalMin%60, '']);
+    wsData.push([]);
+    wsData.push(['Total Hours: ' + formatHM(Math.floor(totalMin/60), totalMin%60)]);
+
+    var ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    // Column widths
+    ws['!cols'] = [
+      {wch:5}, {wch:14}, {wch:14}, {wch:8}, {wch:10}, {wch:24}
+    ];
+
+    // Merge title row
+    ws['!merges'] = [{s:{r:0,c:0}, e:{r:0,c:5}}];
+
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Daily Report');
+
+    var filename = 'Timesheet_' + empName.replace(/\s+/g,'_') + '_' + today + '.xlsx';
+
+    // Download the file
+    XLSX.writeFile(wb, filename);
+
+    // Open email with notification
+    if(autoEmail || true){
+      var subject = 'Daily Timesheet - ' + empName + ' - ' + new Date().toLocaleDateString();
+      var body = 'Daily timesheet for ' + empName + ' is attached.\n\n' +
+        'Date: ' + new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'}) + '\n' +
+        'Total Hours: ' + formatHM(Math.floor(totalMin/60), totalMin%60) + '\n' +
+        'Punches: ' + todayPunches.length + '\n\n' +
+        'The Excel file has been downloaded. Please attach it to this email.';
+      var mailto = 'mailto:jdurand@jrdcompanies.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      window.location.href = mailto;
+    }
+  }
+
+  document.getElementById('btnDailyExcel').addEventListener('click', function(){
+    generateDailyExcel(false);
   });
 
   // --- INIT ---

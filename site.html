@@ -82,7 +82,6 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 14px 0;
       background: rgba(7,7,7,.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -90,18 +89,30 @@
     }
     .topbar-inner {
       display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .topbar-row-top {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      padding: 16px 0 14px;
+    }
+    .topbar-row-nav {
+      display: flex;
+      align-items: center;
+      padding: 0 0 12px;
+      border-top: 1px solid rgba(255,255,255,.04);
+      padding-top: 10px;
     }
     .portal-logo {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       flex-shrink: 0;
     }
     .portal-logo img {
-      height: 46px;
+      height: 58px;
       width: auto;
       filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
     }
@@ -122,6 +133,7 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      flex-wrap: wrap;
     }
     .topbar-nav a {
       padding: 8px 14px;
@@ -595,6 +607,7 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
       .topbar-nav { display: none; }
+      .topbar-row-nav { display: none; }
       .hamburger { display: flex; }
     }
 
@@ -606,7 +619,8 @@
 
     @media (max-width: 600px) {
       .wrap { width: calc(100% - 28px); }
-      .topbar-inner { flex-wrap: wrap; gap: 12px; }
+      .topbar-row-top { flex-wrap: wrap; gap: 12px; padding: 12px 0; }
+      .portal-logo img { height: 48px; }
       .topbar-time { display: none; }
       .portal-user-name { display: none; }
       .welcome-title { font-size: 2.2rem; }
@@ -646,35 +660,39 @@
     <div class="wrap">
       <div class="topbar-inner">
 
-        <div class="portal-logo">
-          <img src="jrd-assets/jrd-companies-main.png" alt="JRD Companies">
-          <span class="portal-logo-badge">Portal</span>
+        <div class="topbar-row-top">
+          <div class="portal-logo">
+            <img src="jrd-assets/jrd-companies-main.png" alt="JRD Companies">
+            <span class="portal-logo-badge">Portal</span>
+          </div>
+
+          <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div class="topbar-right">
+            <div class="topbar-time" id="currentTime"></div>
+            <div class="portal-user">
+              <div class="portal-user-avatar" id="userAvatar">T</div>
+              <span class="portal-user-name" id="userName">Team Member</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+          </div>
         </div>
 
-        <nav class="topbar-nav" id="desktopNav">
-          <a href="#" class="active" data-section="dashboard">Dashboard</a>
-          <a href="portal/applications.html" data-section="apps">Apps</a>
-          <a href="portal/sharepoint.html" data-section="sharepoint">SharePoint</a>
-          <a href="portal/uniforms.html" data-section="uniforms">Uniforms</a>
-          <a href="portal/payroll.html" data-section="payroll">Payroll</a>
-          <a href="portal/cameras.html" data-section="cameras">Cameras</a>
-          <a href="portal/timeoff.html" data-section="timeoff">Time Off</a>
-          <a href="portal/organization.html" data-section="organization">Organization</a>
-        </nav>
-
-        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <div class="topbar-right">
-          <div class="topbar-time" id="currentTime"></div>
-          <div class="portal-user">
-            <div class="portal-user-avatar" id="userAvatar">T</div>
-            <span class="portal-user-name" id="userName">Team Member</span>
-          </div>
-          <button class="logout-btn" id="logoutBtn">Logout</button>
+        <div class="topbar-row-nav">
+          <nav class="topbar-nav" id="desktopNav">
+            <a href="#" class="active" data-section="dashboard">Dashboard</a>
+            <a href="portal/applications.html" data-section="apps">Apps</a>
+            <a href="portal/sharepoint.html" data-section="sharepoint">SharePoint</a>
+            <a href="portal/uniforms.html" data-section="uniforms">Uniforms</a>
+            <a href="portal/payroll.html" data-section="payroll">Payroll</a>
+            <a href="portal/cameras.html" data-section="cameras">Cameras</a>
+            <a href="portal/timeoff.html" data-section="timeoff">Time Off</a>
+            <a href="portal/organization.html" data-section="organization">Organization</a>
+          </nav>
         </div>
 
       </div>
