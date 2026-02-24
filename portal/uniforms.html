@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Uniform Order | JRD Companies Portal</title>
+  <title>Uniforms | JRD Companies Portal</title>
   <link rel="icon" type="image/png" href="../jrd-assets/jrd-companies-chrome.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,6 +62,7 @@
     a{color:inherit;text-decoration:none}
     .wrap{width:min(1100px, calc(100% - 48px)); margin:0 auto; padding:40px 0 80px;}
 
+    /* Page Header */
     .page-header{
       display:flex;
       align-items:center;
@@ -94,6 +95,7 @@
       text-transform:uppercase;
     }
 
+    /* Intro */
     .intro{
       text-align:center;
       margin-bottom:50px;
@@ -107,12 +109,380 @@
       background:linear-gradient(135deg, var(--cream), var(--cream2));
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
+      background-clip:text;
     }
     .intro p{
       color:var(--muted);
       font-size:1.05rem;
-      max-width:500px;
+      max-width:540px;
       margin:0 auto;
+    }
+
+    /* Cintas Featured Card */
+    .cintas-card{
+      position:relative;
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius2);
+      padding:48px 40px;
+      margin-bottom:50px;
+      overflow:hidden;
+    }
+    .cintas-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 10% 30%, rgba(232,93,59,.1), transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(58,122,80,.08), transparent 40%);
+      pointer-events:none;
+    }
+    .cintas-card::after{
+      content:"";
+      position:absolute;
+      top:0;left:0;right:0;
+      height:3px;
+      background:linear-gradient(90deg, var(--orange), var(--green2));
+    }
+
+    .cintas-inner{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:40px;
+    }
+
+    .cintas-brand{
+      flex-shrink:0;
+      width:120px;
+      height:120px;
+      border-radius:22px;
+      background:linear-gradient(135deg, #00205b, #003087);
+      border:1px solid rgba(255,255,255,.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 12px 40px rgba(0,0,0,.4);
+    }
+    .cintas-brand-text{
+      font-family:Oswald,sans-serif;
+      font-size:1.6rem;
+      font-weight:700;
+      letter-spacing:4px;
+      color:#fff;
+      text-transform:uppercase;
+    }
+
+    .cintas-info{flex:1}
+
+    .cintas-title{
+      font-family:Oswald,sans-serif;
+      font-size:1.8rem;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:var(--cream);
+      margin-bottom:4px;
+    }
+    .cintas-subtitle{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 14px;
+      border-radius:6px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      font-family:JetBrains Mono,monospace;
+      font-size:.78rem;
+      color:var(--muted);
+      margin-bottom:16px;
+    }
+    .cintas-desc{
+      color:var(--cream2);
+      font-size:1rem;
+      line-height:1.6;
+      max-width:600px;
+      margin-bottom:24px;
+    }
+
+    .cintas-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .btn-cintas-order{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:16px 32px;
+      border-radius:12px;
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-weight:700;
+      font-size:1rem;
+      color:#0b0b0b;
+      background:linear-gradient(180deg, var(--orange), var(--orange2));
+      box-shadow:0 10px 30px rgba(232,93,59,.25);
+      border:none;
+      cursor:pointer;
+      transition:transform .18s, box-shadow .18s, filter .18s;
+    }
+    .btn-cintas-order:hover{
+      transform:translateY(-2px);
+      filter:brightness(1.08);
+      box-shadow:0 14px 40px rgba(232,93,59,.35);
+    }
+    .btn-cintas-order svg{
+      width:18px;
+      height:18px;
+      stroke:currentColor;
+      stroke-width:2;
+      fill:none;
+    }
+
+    .btn-cintas-manage{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:16px 28px;
+      border-radius:12px;
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-weight:700;
+      font-size:.9rem;
+      color:var(--cream2);
+      background:transparent;
+      border:1px solid var(--stroke);
+      cursor:pointer;
+      transition:transform .18s, border-color .18s, color .18s, background .18s;
+    }
+    .btn-cintas-manage:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.2);
+      color:var(--cream);
+      background:rgba(255,255,255,.04);
+    }
+    .btn-cintas-manage svg{
+      width:16px;
+      height:16px;
+      stroke:currentColor;
+      stroke-width:2;
+      fill:none;
+    }
+
+    .cintas-info-box{
+      position:relative;
+      padding:16px 20px;
+      border-radius:12px;
+      background:rgba(232,93,59,.05);
+      border:1px solid rgba(232,93,59,.15);
+    }
+    .cintas-info-box p{
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.6;
+    }
+    .cintas-info-box strong{
+      color:var(--cream2);
+    }
+
+    /* Quick Order Form Section */
+    .form-section{
+      margin-bottom:50px;
+    }
+    .section-header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:28px;
+    }
+    .section-header::before{
+      content:"";
+      width:4px;
+      height:28px;
+      border-radius:2px;
+      background:linear-gradient(180deg, var(--orange), var(--green2));
+    }
+    .section-title{
+      font-family:Oswald,sans-serif;
+      font-size:1.4rem;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:var(--cream);
+    }
+
+    .form-card{
+      max-width:640px;
+      margin:0 auto;
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius2);
+      overflow:hidden;
+    }
+
+    .form-body{
+      padding:32px;
+    }
+
+    .form-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .form-group{
+      margin-bottom:24px;
+    }
+    .form-group label{
+      display:block;
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-size:.9rem;
+      color:var(--cream);
+      margin-bottom:10px;
+    }
+    .form-group label .optional{
+      font-family:Roboto,sans-serif;
+      font-size:.75rem;
+      color:var(--muted);
+      text-transform:none;
+      letter-spacing:0;
+      margin-left:6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+      width:100%;
+      padding:16px 18px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.35);
+      color:var(--cream);
+      font-size:1rem;
+      font-family:inherit;
+      outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus{
+      border-color:rgba(232,93,59,.5);
+      box-shadow:0 0 0 3px rgba(232,93,59,.1);
+    }
+    .form-group textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+    .form-group select{
+      cursor:pointer;
+      appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a9a295' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 16px center;
+    }
+    .form-group select option{
+      background:var(--panel);
+      color:var(--cream);
+    }
+    .form-group input[type="number"]{
+      -moz-appearance:textfield;
+    }
+    .form-group input[type="number"]::-webkit-inner-spin-button,
+    .form-group input[type="number"]::-webkit-outer-spin-button{
+      opacity:1;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder{
+      color:var(--muted);
+    }
+
+    .btn-submit-order{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      padding:18px;
+      border-radius:12px;
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-weight:700;
+      font-size:1rem;
+      cursor:pointer;
+      border:none;
+      background:linear-gradient(180deg, var(--orange), var(--orange2));
+      color:#0b0b0b;
+      box-shadow:0 12px 35px rgba(232,93,59,.25);
+      transition:transform .18s, box-shadow .18s;
+    }
+    .btn-submit-order:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 45px rgba(232,93,59,.35);
+    }
+    .btn-submit-order svg{
+      width:20px;
+      height:20px;
+      stroke:currentColor;
+      stroke-width:2;
+      fill:none;
+    }
+
+    .success-msg{
+      display:none;
+      text-align:center;
+      padding:50px 32px;
+    }
+    .success-msg svg{
+      width:70px;
+      height:70px;
+      stroke:var(--green2);
+      stroke-width:1.5;
+      fill:none;
+      margin-bottom:24px;
+    }
+    .success-msg h3{
+      font-family:Oswald,sans-serif;
+      font-size:1.5rem;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+    .success-msg p{
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .success-msg .btn-another{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:24px;
+      padding:12px 24px;
+      border-radius:10px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      font-family:Oswald,sans-serif;
+      font-size:.9rem;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:var(--cream2);
+      cursor:pointer;
+      transition:background .2s, border-color .2s, color .2s;
+    }
+    .success-msg .btn-another:hover{
+      background:rgba(255,255,255,.08);
+      border-color:rgba(255,255,255,.2);
+      color:var(--cream);
+    }
+
+    /* Company Uniform Cards */
+    .company-section{
+      margin-bottom:60px;
     }
 
     .company-grid{
@@ -223,7 +593,7 @@
       fill:none;
     }
 
-    .coming-tag{
+    .via-tag{
       display:inline-block;
       margin-top:16px;
       padding:6px 14px;
@@ -235,9 +605,18 @@
       color:var(--muted);
     }
 
-    @media(max-width:800px){
+    @media(max-width:900px){
       .company-grid{grid-template-columns:1fr}
       .company-card{padding:36px 24px}
+      .cintas-inner{flex-direction:column;text-align:center;gap:24px}
+      .cintas-actions{justify-content:center}
+      .cintas-info-box{text-align:left}
+    }
+    @media(max-width:600px){
+      .wrap{width:calc(100% - 28px)}
+      .cintas-card{padding:32px 24px}
+      .form-row{grid-template-columns:1fr}
+      .form-body{padding:24px}
     }
   </style>
 </head>
@@ -245,56 +624,244 @@
 <body>
   <div class="wrap">
 
+    <!-- Page Header -->
     <header class="page-header">
       <a class="back-btn" href="../site.html" aria-label="Back to Portal">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </a>
-      <h1 class="page-title">Uniform Order</h1>
+      <h1 class="page-title">Uniforms</h1>
     </header>
 
+    <!-- Intro -->
     <div class="intro">
       <h2>Get Your Gear</h2>
-      <p>Pick your store and order what you need</p>
+      <p>Order uniforms through our Cintas portal or request items directly</p>
     </div>
 
-    <div class="company-grid">
+    <!-- Cintas Portal Featured Card -->
+    <section class="cintas-card">
+      <div class="cintas-inner">
+        <div class="cintas-brand">
+          <span class="cintas-brand-text">CINTAS</span>
+        </div>
+        <div class="cintas-info">
+          <div class="cintas-title">Cintas</div>
+          <div class="cintas-subtitle">Official Uniform Partner</div>
+          <p class="cintas-desc">Order shirts, pants, jackets, and safety gear through our Cintas business account.</p>
+          <div class="cintas-actions">
+            <a class="btn-cintas-order" href="https://shop.mycintas.com/site/login" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+              Order Uniforms
+            </a>
+            <a class="btn-cintas-manage" href="https://account.cintas.com/online/login" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Manage Account
+            </a>
+          </div>
+          <div class="cintas-info-box">
+            <p><strong>First time?</strong> You'll need your Cintas account number from your manager to register. Call <strong>800-211-0314</strong> for help.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <div class="company-card holiday">
-        <img src="../jrd-assets/holiday-logo.png" alt="Holiday" class="company-logo">
-        <div class="company-name">Holiday Stationstores</div>
-        <div class="company-loc">Store #3851 - Lakeville</div>
-        <a class="order-btn orange" href="#">
-          <svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
-          Order Gear
-        </a>
-        <div class="coming-tag">Coming Soon</div>
+    <!-- Quick Order Request -->
+    <section class="form-section">
+      <div class="section-header">
+        <h2 class="section-title">Quick Order Request</h2>
       </div>
 
-      <div class="company-card innout">
-        <img src="../jrd-assets/in-n-out-logo.png" alt="IN N OUT" class="company-logo">
-        <div class="company-name">IN N OUT Market</div>
-        <div class="company-loc">Maplewood</div>
-        <a class="order-btn green" href="#">
-          <svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
-          Order Gear
-        </a>
-        <div class="coming-tag">Coming Soon</div>
+      <div class="form-card">
+        <div class="form-body" id="formBody">
+          <form id="uniformForm" onsubmit="submitOrder(event)">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="empName">Employee Name</label>
+                <input type="text" id="empName" name="empName" placeholder="Your full name" required>
+              </div>
+              <div class="form-group">
+                <label for="company">Company / Location</label>
+                <select id="company" name="company" required>
+                  <option value="">Select location</option>
+                  <option value="Holiday Stationstores - Lakeville">Holiday Stationstores - Lakeville</option>
+                  <option value="IN N OUT Market - Maplewood">IN N OUT Market - Maplewood</option>
+                  <option value="Durand Automotive - Maplewood">Durand Automotive - Maplewood</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemType">Item Type</label>
+                <select id="itemType" name="itemType" required>
+                  <option value="">Select item</option>
+                  <option value="Polo Shirt">Polo Shirt</option>
+                  <option value="T-Shirt">T-Shirt</option>
+                  <option value="Button-Down Shirt">Button-Down Shirt</option>
+                  <option value="Pants">Pants</option>
+                  <option value="Jacket">Jacket</option>
+                  <option value="Hat/Cap">Hat/Cap</option>
+                  <option value="Safety Vest">Safety Vest</option>
+                  <option value="Name Badge">Name Badge</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="size">Size</label>
+                <select id="size" name="size" required>
+                  <option value="">Select size</option>
+                  <option value="XS">XS</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="2XL">2XL</option>
+                  <option value="3XL">3XL</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="qty">Quantity</label>
+                <input type="number" id="qty" name="qty" min="1" max="50" value="1" required>
+              </div>
+              <div class="form-group">
+                <label for="color">Color <span class="optional">optional</span></label>
+                <input type="text" id="color" name="color" placeholder="e.g. Black, Navy, Red">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes">Notes <span class="optional">optional</span></label>
+              <textarea id="notes" name="notes" placeholder="Any special requests or details..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit-order">
+              <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              Submit Order Request
+            </button>
+
+          </form>
+        </div>
+
+        <div class="success-msg" id="successMsg">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          <h3>Request Sent</h3>
+          <p>Your uniform order request has been submitted.<br>You'll receive a confirmation email shortly.</p>
+          <button class="btn-another" onclick="resetForm()">Submit Another Request</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Company Uniform Cards -->
+    <section class="company-section">
+      <div class="section-header">
+        <h2 class="section-title">Order by Location</h2>
       </div>
 
-      <div class="company-card durand">
-        <img src="../jrd-assets/durand-automotive-logo.png" alt="Durand Automotive" class="company-logo">
-        <div class="company-name">Durand Automotive</div>
-        <div class="company-loc">Maplewood</div>
-        <a class="order-btn steel" href="#">
-          <svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
-          Order Gear
-        </a>
-        <div class="coming-tag">Coming Soon</div>
-      </div>
+      <div class="company-grid">
 
-    </div>
+        <div class="company-card holiday">
+          <img src="../jrd-assets/holiday-logo.png" alt="Holiday" class="company-logo">
+          <div class="company-name">Holiday Stationstores</div>
+          <div class="company-loc">Store #3851 - Lakeville</div>
+          <a class="order-btn orange" href="https://shop.mycintas.com/site/login" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+            Order Gear
+          </a>
+          <div class="via-tag">via Cintas</div>
+        </div>
+
+        <div class="company-card innout">
+          <img src="../jrd-assets/in-n-out-logo.png" alt="IN N OUT" class="company-logo">
+          <div class="company-name">IN N OUT Market</div>
+          <div class="company-loc">Maplewood</div>
+          <a class="order-btn green" href="https://shop.mycintas.com/site/login" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+            Order Gear
+          </a>
+          <div class="via-tag">via Cintas</div>
+        </div>
+
+        <div class="company-card durand">
+          <img src="../jrd-assets/durand-automotive-logo.png" alt="Durand Automotive" class="company-logo">
+          <div class="company-name">Durand Automotive</div>
+          <div class="company-loc">Maplewood</div>
+          <a class="order-btn steel" href="https://shop.mycintas.com/site/login" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+            Order Gear
+          </a>
+          <div class="via-tag">via Cintas</div>
+        </div>
+
+      </div>
+    </section>
 
   </div>
+
+  <script>
+    /* Pre-fill employee name from sessionStorage */
+    (function(){
+      var user = sessionStorage.getItem('portal_user');
+      if(user){
+        var nameField = document.getElementById('empName');
+        if(nameField) nameField.value = user;
+      }
+    })();
+
+    function submitOrder(e){
+      e.preventDefault();
+
+      var form = document.getElementById('uniformForm');
+      var data = new FormData(form);
+
+      var empName = data.get('empName');
+      var company = data.get('company');
+      var itemType = data.get('itemType');
+      var size = data.get('size');
+      var qty = data.get('qty');
+      var color = data.get('color') || '(no preference)';
+      var notes = data.get('notes') || '(none)';
+
+      var subject = encodeURIComponent('Uniform Order Request - ' + company);
+      var body = encodeURIComponent(
+        'UNIFORM ORDER REQUEST\n' +
+        '=====================\n\n' +
+        'Employee: ' + empName + '\n' +
+        'Company/Location: ' + company + '\n\n' +
+        'Item: ' + itemType + '\n' +
+        'Size: ' + size + '\n' +
+        'Quantity: ' + qty + '\n' +
+        'Color Preference: ' + color + '\n\n' +
+        'Notes:\n' + notes + '\n\n' +
+        '---\n' +
+        'Submitted via JRD Companies Portal'
+      );
+
+      window.location.href = 'mailto:jdurand@jrdcompanies.com?subject=' + subject + '&body=' + body;
+
+      document.getElementById('formBody').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+
+      form.reset();
+    }
+
+    function resetForm(){
+      document.getElementById('formBody').style.display = 'block';
+      document.getElementById('successMsg').style.display = 'none';
+
+      /* Re-fill name from session */
+      var user = sessionStorage.getItem('portal_user');
+      if(user){
+        document.getElementById('empName').value = user;
+      }
+    }
+  </script>
 <script src="../jack2-widget.js"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -62,6 +62,7 @@
     a{color:inherit;text-decoration:none}
     .wrap{width:min(1100px, calc(100% - 48px)); margin:0 auto; padding:40px 0 80px;}
 
+    /* Page Header */
     .page-header{
       display:flex;
       align-items:center;
@@ -94,33 +95,420 @@
       text-transform:uppercase;
     }
 
-    .intro{
-      text-align:center;
-      margin-bottom:50px;
-    }
-    .intro h2{
+    /* Section Headers */
+    .section-header{
       font-family:Oswald,sans-serif;
-      font-size:2rem;
-      letter-spacing:4px;
+      font-size:1.35rem;
+      letter-spacing:3px;
       text-transform:uppercase;
-      margin-bottom:14px;
-      background:linear-gradient(135deg, var(--cream), var(--cream2));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
+      margin-bottom:28px;
+      display:flex;
+      align-items:center;
+      gap:14px;
     }
-    .intro p{
-      color:var(--muted);
-      font-size:1.05rem;
-      max-width:540px;
-      margin:0 auto;
+    .section-header::after{
+      content:"";
+      flex:1;
+      height:1px;
+      background:var(--stroke);
+    }
+    .section-header svg{
+      width:22px;
+      height:22px;
+      stroke:var(--orange);
+      stroke-width:2;
+      fill:none;
+      flex-shrink:0;
     }
 
+    /* Time Clock Card */
+    .clock-card{
+      position:relative;
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius2);
+      padding:48px 40px 44px;
+      text-align:center;
+      overflow:hidden;
+      margin-bottom:36px;
+    }
+    .clock-card::before{
+      content:"";
+      position:absolute;
+      top:0;left:0;right:0;
+      height:3px;
+      background:linear-gradient(90deg, var(--orange), var(--green2), var(--orange));
+      background-size:200% 100%;
+      animation:shimmer 4s ease infinite;
+    }
+    @keyframes shimmer{
+      0%,100%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+    }
+    .clock-card::after{
+      content:"";
+      position:absolute;
+      top:50%;left:50%;
+      width:600px;height:600px;
+      transform:translate(-50%,-50%);
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(232,93,59,.04) 0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    .clock-employee{
+      font-family:Oswald,sans-serif;
+      font-size:1.1rem;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    .clock-location-wrap{
+      margin-bottom:28px;
+    }
+    .clock-location-select{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      border-radius:8px;
+      color:var(--cream2);
+      font-family:Roboto,sans-serif;
+      font-size:.9rem;
+      padding:8px 16px;
+      cursor:pointer;
+      outline:none;
+      transition:border-color .2s;
+      -webkit-appearance:none;
+      appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23a9a295' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 12px center;
+      padding-right:36px;
+    }
+    .clock-location-select:hover,
+    .clock-location-select:focus{
+      border-color:rgba(232,93,59,.4);
+    }
+    .clock-location-select option{
+      background:var(--panel);
+      color:var(--cream);
+    }
+
+    .clock-display{
+      font-family:'JetBrains Mono',monospace;
+      font-size:4.5rem;
+      font-weight:700;
+      letter-spacing:4px;
+      color:var(--cream);
+      line-height:1;
+      margin-bottom:8px;
+      position:relative;
+      z-index:1;
+      text-shadow:0 0 40px rgba(232,93,59,.15), 0 0 80px rgba(232,93,59,.05);
+      transition:text-shadow .4s;
+    }
+    .clock-display.clocked-in{
+      text-shadow:0 0 40px rgba(58,122,80,.2), 0 0 80px rgba(58,122,80,.08);
+    }
+    .clock-date{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.95rem;
+      color:var(--muted);
+      letter-spacing:1px;
+      margin-bottom:32px;
+    }
+
+    /* Status Indicator */
+    .clock-status{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 22px;
+      border-radius:30px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--stroke);
+      margin-bottom:32px;
+      font-size:.9rem;
+      font-weight:500;
+      transition:border-color .3s, background .3s;
+    }
+    .clock-status.is-in{
+      border-color:rgba(58,122,80,.4);
+      background:rgba(58,122,80,.08);
+    }
+    .clock-status.is-out{
+      border-color:rgba(255,255,255,.06);
+    }
+    .status-dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#555;
+      flex-shrink:0;
+      transition:background .3s;
+    }
+    .status-dot.is-in{
+      background:var(--green2);
+      animation:pulse-green 1.8s ease infinite;
+    }
+    .status-dot.is-out{
+      background:#5a3a3a;
+    }
+    @keyframes pulse-green{
+      0%,100%{box-shadow:0 0 0 0 rgba(58,122,80,.5)}
+      50%{box-shadow:0 0 0 8px rgba(58,122,80,0)}
+    }
+    .status-label{
+      color:var(--muted);
+    }
+    .status-label strong{
+      color:var(--cream);
+      font-weight:600;
+    }
+    .status-label .since{
+      color:var(--green2);
+      font-family:'JetBrains Mono',monospace;
+      font-size:.85rem;
+    }
+
+    /* Punch Buttons */
+    .punch-buttons{
+      display:flex;
+      gap:20px;
+      justify-content:center;
+      margin-bottom:32px;
+      position:relative;
+      z-index:1;
+    }
+    .punch-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      min-width:220px;
+      padding:20px 36px;
+      border-radius:var(--radius);
+      font-family:Oswald,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:3px;
+      font-weight:700;
+      font-size:1.1rem;
+      color:#0b0b0b;
+      border:none;
+      cursor:pointer;
+      transition:transform .18s, box-shadow .18s, filter .18s, opacity .18s;
+      position:relative;
+      overflow:hidden;
+    }
+    .punch-btn::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.15) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .punch-btn svg{
+      width:22px;
+      height:22px;
+      stroke:currentColor;
+      stroke-width:2.5;
+      fill:none;
+    }
+    .punch-btn.btn-in{
+      background:linear-gradient(180deg, var(--green2), var(--green));
+      box-shadow:0 10px 35px rgba(58,122,80,.3);
+    }
+    .punch-btn.btn-in:hover:not(:disabled){
+      transform:translateY(-3px);
+      box-shadow:0 16px 50px rgba(58,122,80,.4);
+      filter:brightness(1.1);
+    }
+    .punch-btn.btn-out{
+      background:linear-gradient(180deg, var(--orange), var(--orange2));
+      box-shadow:0 10px 35px rgba(232,93,59,.3);
+    }
+    .punch-btn.btn-out:hover:not(:disabled){
+      transform:translateY(-3px);
+      box-shadow:0 16px 50px rgba(232,93,59,.4);
+      filter:brightness(1.1);
+    }
+    .punch-btn:disabled{
+      opacity:.3;
+      cursor:not-allowed;
+      transform:none !important;
+      filter:grayscale(.5) brightness(.8) !important;
+      box-shadow:none !important;
+    }
+    .punch-btn .punch-time-stamp{
+      display:block;
+      font-family:'JetBrains Mono',monospace;
+      font-size:.7rem;
+      font-weight:400;
+      letter-spacing:1px;
+      opacity:.8;
+      margin-top:2px;
+    }
+    .punch-btn-inner{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:2px;
+    }
+
+    /* Today's Hours */
+    .today-hours{
+      display:inline-flex;
+      align-items:baseline;
+      gap:8px;
+      font-family:'JetBrains Mono',monospace;
+      font-size:1rem;
+      color:var(--muted);
+      position:relative;
+      z-index:1;
+    }
+    .today-hours .hours-val{
+      font-size:1.6rem;
+      font-weight:700;
+      color:var(--cream);
+    }
+
+    /* Punch History Section */
+    .history-section{
+      margin-top:56px;
+      margin-bottom:56px;
+    }
+    .history-card{
+      background:linear-gradient(180deg, var(--panel), var(--panel2));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius2);
+      overflow:hidden;
+    }
+    .history-toolbar{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:12px;
+      padding:18px 24px;
+      border-bottom:1px solid var(--stroke);
+    }
+    .history-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 18px;
+      border-radius:8px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      color:var(--muted);
+      font-family:Oswald,sans-serif;
+      font-size:.8rem;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:color .2s, border-color .2s, background .2s;
+    }
+    .history-btn:hover{
+      color:var(--cream);
+      border-color:var(--orange);
+      background:rgba(232,93,59,.06);
+    }
+    .history-btn svg{
+      width:16px;
+      height:16px;
+      stroke:currentColor;
+      stroke-width:2;
+      fill:none;
+    }
+
+    .punch-table{
+      width:100%;
+      border-collapse:collapse;
+    }
+    .punch-table thead th{
+      font-family:Oswald,sans-serif;
+      font-size:.75rem;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--muted);
+      padding:14px 20px;
+      text-align:left;
+      border-bottom:1px solid var(--stroke);
+      font-weight:500;
+    }
+    .punch-table tbody tr{
+      transition:background .15s;
+    }
+    .punch-table tbody tr:nth-child(even){
+      background:rgba(255,255,255,.015);
+    }
+    .punch-table tbody tr:hover{
+      background:rgba(255,255,255,.035);
+    }
+    .punch-table td{
+      padding:13px 20px;
+      font-size:.9rem;
+      color:var(--cream2);
+      border-bottom:1px solid rgba(255,255,255,.03);
+    }
+    .punch-table td.mono{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.85rem;
+    }
+    .punch-table td.hours-cell{
+      font-family:'JetBrains Mono',monospace;
+      font-weight:600;
+      color:var(--cream);
+    }
+    .punch-table td.location-cell{
+      font-size:.8rem;
+      color:var(--muted);
+    }
+    .punch-table .open-shift{
+      color:var(--green2);
+      font-style:italic;
+      font-size:.8rem;
+    }
+    .punch-table tfoot td{
+      padding:16px 20px;
+      border-top:1px solid var(--stroke);
+      font-family:Oswald,sans-serif;
+      font-size:.85rem;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .punch-table tfoot .total-val{
+      font-family:'JetBrains Mono',monospace;
+      font-weight:700;
+      font-size:1rem;
+      color:var(--cream);
+      text-transform:none;
+      letter-spacing:0;
+    }
+    .empty-history{
+      padding:50px 20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .empty-history svg{
+      width:40px;
+      height:40px;
+      stroke:rgba(255,255,255,.12);
+      stroke-width:1.5;
+      fill:none;
+      margin-bottom:14px;
+    }
+
+    /* Payroll Providers Section */
+    .providers-section{
+      margin-top:56px;
+    }
     .company-grid{
       display:grid;
       grid-template-columns:repeat(3, 1fr);
       gap:28px;
     }
-
     .company-card{
       position:relative;
       background:linear-gradient(180deg, var(--panel), var(--panel2));
@@ -241,9 +629,21 @@
       fill:none;
     }
 
+    /* Responsive */
     @media(max-width:800px){
       .company-grid{grid-template-columns:1fr}
       .company-card{padding:36px 24px}
+      .clock-display{font-size:3rem}
+      .punch-buttons{flex-direction:column;align-items:center}
+      .punch-btn{min-width:200px;width:100%;max-width:300px}
+      .punch-table thead th,
+      .punch-table td{padding:10px 12px;font-size:.8rem}
+      .punch-table td.mono{font-size:.75rem}
+      .clock-card{padding:36px 20px 32px}
+    }
+    @media(max-width:500px){
+      .clock-display{font-size:2.4rem;letter-spacing:2px}
+      .history-toolbar{flex-wrap:wrap;justify-content:center}
     }
   </style>
 </head>
@@ -251,6 +651,7 @@
 <body>
   <div class="wrap">
 
+    <!-- Page Header -->
     <header class="page-header">
       <a class="back-btn" href="../site.html" aria-label="Back to Portal">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -258,55 +659,452 @@
       <h1 class="page-title">Payroll</h1>
     </header>
 
-    <div class="intro">
-      <h2>Your Pay</h2>
-      <p>Check stubs, get your W-2, update direct deposit</p>
+    <!-- TIME CLOCK SECTION -->
+    <div class="section-header">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Time Clock
     </div>
 
-    <div class="company-grid">
-
-      <div class="company-card holiday">
-        <img src="../jrd-assets/holiday-logo.png" alt="Holiday" class="company-logo">
-        <div class="company-name">Holiday Stationstores</div>
-        <div class="company-loc">Store #3851 - Lakeville</div>
-        <div class="provider-badge">
-          <span>PAYCOR</span>
-        </div>
-        <a class="payroll-btn orange" href="https://www.paycor.com/login" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Sign In
-        </a>
+    <div class="clock-card">
+      <!-- Employee & Location -->
+      <div class="clock-employee" id="clockEmployee">Employee</div>
+      <div class="clock-location-wrap">
+        <select class="clock-location-select" id="clockLocation">
+          <option value="Holiday Stationstores">Holiday Stationstores</option>
+          <option value="IN N OUT Market">IN N OUT Market</option>
+          <option value="Durand Automotive">Durand Automotive</option>
+        </select>
       </div>
 
-      <div class="company-card innout">
-        <img src="../jrd-assets/in-n-out-logo.png" alt="IN N OUT" class="company-logo">
-        <div class="company-name">IN N OUT Market</div>
-        <div class="company-loc">Maplewood</div>
-        <div class="provider-badge">
-          <span>QUICKBOOKS</span>
-        </div>
-        <a class="payroll-btn green" href="https://workforce.intuit.com/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Sign In
-        </a>
+      <!-- Digital Clock -->
+      <div class="clock-display" id="clockDisplay">00:00:00</div>
+      <div class="clock-date" id="clockDate"></div>
+
+      <!-- Status Indicator -->
+      <div class="clock-status is-out" id="clockStatus">
+        <span class="status-dot is-out" id="statusDot"></span>
+        <span class="status-label" id="statusLabel">Currently: <strong>CLOCKED OUT</strong></span>
       </div>
 
-      <div class="company-card durand">
-        <img src="../jrd-assets/durand-automotive-logo.png" alt="Durand Automotive" class="company-logo">
-        <div class="company-name">Durand Automotive</div>
-        <div class="company-loc">Maplewood</div>
-        <div class="provider-badge">
-          <span>QUICKBOOKS</span>
-        </div>
-        <a class="payroll-btn steel" href="https://workforce.intuit.com/" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Sign In
-        </a>
+      <!-- Punch Buttons -->
+      <div class="punch-buttons">
+        <button class="punch-btn btn-in" id="btnClockIn" type="button">
+          <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          <div class="punch-btn-inner">
+            <span>Clock In</span>
+            <span class="punch-time-stamp" id="inStamp"></span>
+          </div>
+        </button>
+        <button class="punch-btn btn-out" id="btnClockOut" type="button" disabled>
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <div class="punch-btn-inner">
+            <span>Clock Out</span>
+            <span class="punch-time-stamp" id="outStamp"></span>
+          </div>
+        </button>
       </div>
 
+      <!-- Today's Hours -->
+      <div class="today-hours">
+        Today: <span class="hours-val" id="todayHours">0h 0m</span>
+      </div>
+    </div>
+
+    <!-- PUNCH HISTORY SECTION -->
+    <div class="history-section">
+      <div class="section-header">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Punch History
+      </div>
+
+      <div class="history-card">
+        <div class="history-toolbar">
+          <button class="history-btn" id="btnExport" type="button">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+          </button>
+          <button class="history-btn" id="btnEmail" type="button">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Send Timesheet
+          </button>
+        </div>
+        <div id="historyTable"></div>
+      </div>
+    </div>
+
+    <!-- PAYROLL PROVIDERS SECTION -->
+    <div class="providers-section">
+      <div class="section-header">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Payroll Providers
+      </div>
+
+      <div class="company-grid">
+
+        <div class="company-card holiday">
+          <img src="../jrd-assets/holiday-logo.png" alt="Holiday" class="company-logo">
+          <div class="company-name">Holiday Stationstores</div>
+          <div class="company-loc">Store #3851 - Lakeville</div>
+          <div class="provider-badge">
+            <span>PAYCOR</span>
+          </div>
+          <a class="payroll-btn orange" href="https://www.paycor.com/login" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Sign In
+          </a>
+        </div>
+
+        <div class="company-card innout">
+          <img src="../jrd-assets/in-n-out-logo.png" alt="IN N OUT" class="company-logo">
+          <div class="company-name">IN N OUT Market</div>
+          <div class="company-loc">Maplewood</div>
+          <div class="provider-badge">
+            <span>QUICKBOOKS</span>
+          </div>
+          <a class="payroll-btn green" href="https://workforce.intuit.com/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Sign In
+          </a>
+        </div>
+
+        <div class="company-card durand">
+          <img src="../jrd-assets/durand-automotive-logo.png" alt="Durand Automotive" class="company-logo">
+          <div class="company-name">Durand Automotive</div>
+          <div class="company-loc">Maplewood</div>
+          <div class="provider-badge">
+            <span>QUICKBOOKS</span>
+          </div>
+          <a class="payroll-btn steel" href="https://workforce.intuit.com/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Sign In
+          </a>
+        </div>
+
+      </div>
     </div>
 
   </div>
+
+<script>
+(function(){
+  'use strict';
+
+  // --- STORAGE ---
+  const STORAGE_KEY = 'jrd_punches';
+
+  function getPunches(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch(e){ return []; }
+  }
+  function savePunches(arr){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+
+  // --- ELEMENTS ---
+  const clockDisplay = document.getElementById('clockDisplay');
+  const clockDate    = document.getElementById('clockDate');
+  const clockEmployee= document.getElementById('clockEmployee');
+  const clockLocation= document.getElementById('clockLocation');
+  const clockStatus  = document.getElementById('clockStatus');
+  const statusDot    = document.getElementById('statusDot');
+  const statusLabel  = document.getElementById('statusLabel');
+  const btnIn        = document.getElementById('btnClockIn');
+  const btnOut       = document.getElementById('btnClockOut');
+  const inStamp      = document.getElementById('inStamp');
+  const outStamp     = document.getElementById('outStamp');
+  const todayHours   = document.getElementById('todayHours');
+  const historyTable = document.getElementById('historyTable');
+
+  // --- EMPLOYEE NAME ---
+  const empName = sessionStorage.getItem('portal_user') || 'Employee';
+  clockEmployee.textContent = empName;
+
+  // --- CLOCK ---
+  function pad(n){ return n.toString().padStart(2,'0'); }
+
+  function formatTime12(d){
+    let h = d.getHours(), m = d.getMinutes();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return h + ':' + pad(m) + ' ' + ampm;
+  }
+
+  function updateClock(){
+    const now = new Date();
+    clockDisplay.textContent = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    clockDate.textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // --- HELPERS ---
+  function todayStr(){
+    const d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+
+  function getOpenPunch(){
+    const punches = getPunches();
+    for(let i = punches.length - 1; i >= 0; i--){
+      if(!punches[i].clockOut) return { punch: punches[i], index: i };
+    }
+    return null;
+  }
+
+  function diffHoursMinutes(start, end){
+    const ms = new Date(end) - new Date(start);
+    if(ms <= 0) return { h:0, m:0, total:0 };
+    const totalMin = Math.floor(ms / 60000);
+    return { h: Math.floor(totalMin / 60), m: totalMin % 60, total: totalMin };
+  }
+
+  function formatHM(h, m){
+    return h + 'h ' + m + 'm';
+  }
+
+  // --- UI STATE ---
+  function refreshState(){
+    const open = getOpenPunch();
+    if(open){
+      // Clocked in
+      btnIn.disabled = true;
+      btnOut.disabled = false;
+      clockDisplay.classList.add('clocked-in');
+      clockStatus.className = 'clock-status is-in';
+      statusDot.className = 'status-dot is-in';
+      const inTime = formatTime12(new Date(open.punch.clockIn));
+      statusLabel.innerHTML = 'Currently: <strong>CLOCKED IN</strong> <span class="since">since ' + inTime + '</span>';
+      inStamp.textContent = inTime;
+      outStamp.textContent = '';
+      clockLocation.value = open.punch.location;
+    } else {
+      // Clocked out
+      btnIn.disabled = false;
+      btnOut.disabled = true;
+      clockDisplay.classList.remove('clocked-in');
+      clockStatus.className = 'clock-status is-out';
+      statusDot.className = 'status-dot is-out';
+      statusLabel.innerHTML = 'Currently: <strong>CLOCKED OUT</strong>';
+      inStamp.textContent = '';
+      // Show last clock-out time
+      const punches = getPunches();
+      if(punches.length && punches[punches.length-1].clockOut){
+        outStamp.textContent = formatTime12(new Date(punches[punches.length-1].clockOut));
+      } else {
+        outStamp.textContent = '';
+      }
+    }
+
+    // Today's hours
+    const today = todayStr();
+    const punches = getPunches();
+    let totalMin = 0;
+    punches.forEach(function(p){
+      if(p.date === today){
+        const end = p.clockOut ? p.clockOut : new Date().toISOString();
+        const diff = diffHoursMinutes(p.clockIn, end);
+        totalMin += diff.total;
+      }
+    });
+    todayHours.textContent = formatHM(Math.floor(totalMin/60), totalMin%60);
+
+    renderHistory();
+  }
+
+  // Update today's hours live when clocked in
+  setInterval(function(){
+    const open = getOpenPunch();
+    if(open){
+      const today = todayStr();
+      const punches = getPunches();
+      let totalMin = 0;
+      punches.forEach(function(p){
+        if(p.date === today){
+          const end = p.clockOut ? p.clockOut : new Date().toISOString();
+          const diff = diffHoursMinutes(p.clockIn, end);
+          totalMin += diff.total;
+        }
+      });
+      todayHours.textContent = formatHM(Math.floor(totalMin/60), totalMin%60);
+    }
+  }, 30000);
+
+  // --- PUNCH IN ---
+  btnIn.addEventListener('click', function(){
+    const open = getOpenPunch();
+    if(open) return;
+    const now = new Date();
+    const punch = {
+      date: todayStr(),
+      clockIn: now.toISOString(),
+      clockOut: null,
+      location: clockLocation.value,
+      employee: empName
+    };
+    const punches = getPunches();
+    punches.push(punch);
+    savePunches(punches);
+    refreshState();
+  });
+
+  // --- PUNCH OUT ---
+  btnOut.addEventListener('click', function(){
+    const open = getOpenPunch();
+    if(!open) return;
+    const now = new Date();
+    const punches = getPunches();
+    punches[open.index].clockOut = now.toISOString();
+    savePunches(punches);
+    refreshState();
+  });
+
+  // --- HISTORY TABLE ---
+  function renderHistory(){
+    const punches = getPunches();
+    // Filter last 14 days
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 14);
+    const cutoffStr = cutoff.toISOString();
+
+    const recent = punches.filter(function(p){
+      return p.clockIn >= cutoffStr;
+    }).sort(function(a,b){
+      return b.clockIn.localeCompare(a.clockIn);
+    });
+
+    if(recent.length === 0){
+      historyTable.innerHTML =
+        '<div class="empty-history">' +
+          '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+          '<div>No punch records in the last 14 days</div>' +
+        '</div>';
+      return;
+    }
+
+    let totalMin = 0;
+    let html = '<table class="punch-table"><thead><tr>' +
+      '<th>Date</th><th>Clock In</th><th>Clock Out</th><th>Hours</th><th>Location</th>' +
+      '</tr></thead><tbody>';
+
+    recent.forEach(function(p){
+      const dateObj = new Date(p.clockIn);
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const dateLabel = days[dateObj.getDay()] + ', ' + months[dateObj.getMonth()] + ' ' + dateObj.getDate();
+
+      const inTime = formatTime12(new Date(p.clockIn));
+      let outTime, hoursLabel;
+      if(p.clockOut){
+        outTime = formatTime12(new Date(p.clockOut));
+        const diff = diffHoursMinutes(p.clockIn, p.clockOut);
+        hoursLabel = formatHM(diff.h, diff.m);
+        totalMin += diff.total;
+      } else {
+        outTime = '<span class="open-shift">In progress...</span>';
+        const diff = diffHoursMinutes(p.clockIn, new Date().toISOString());
+        hoursLabel = '<span class="open-shift">' + formatHM(diff.h, diff.m) + '*</span>';
+        totalMin += diff.total;
+      }
+
+      html += '<tr>' +
+        '<td>' + dateLabel + '</td>' +
+        '<td class="mono">' + inTime + '</td>' +
+        '<td class="mono">' + outTime + '</td>' +
+        '<td class="hours-cell">' + hoursLabel + '</td>' +
+        '<td class="location-cell">' + (p.location || '-') + '</td>' +
+        '</tr>';
+    });
+
+    html += '</tbody><tfoot><tr>' +
+      '<td colspan="3" style="text-align:right">Period Total</td>' +
+      '<td class="total-val">' + formatHM(Math.floor(totalMin/60), totalMin%60) + '</td>' +
+      '<td></td>' +
+      '</tr></tfoot></table>';
+
+    historyTable.innerHTML = html;
+  }
+
+  // --- EXPORT CSV ---
+  document.getElementById('btnExport').addEventListener('click', function(){
+    const punches = getPunches();
+    if(!punches.length){ alert('No punch data to export.'); return; }
+
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 14);
+    const cutoffStr = cutoff.toISOString();
+    const recent = punches.filter(function(p){ return p.clockIn >= cutoffStr; })
+      .sort(function(a,b){ return a.clockIn.localeCompare(b.clockIn); });
+
+    let csv = 'Date,Clock In,Clock Out,Hours,Location,Employee\n';
+    recent.forEach(function(p){
+      const d = new Date(p.clockIn);
+      const dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+      const inTime = formatTime12(new Date(p.clockIn));
+      const outTime = p.clockOut ? formatTime12(new Date(p.clockOut)) : 'In progress';
+      let hours = '';
+      if(p.clockOut){
+        const diff = diffHoursMinutes(p.clockIn, p.clockOut);
+        hours = diff.h + 'h ' + diff.m + 'm';
+      }
+      csv += '"' + dateStr + '","' + inTime + '","' + outTime + '","' + hours + '","' + (p.location||'') + '","' + (p.employee||'') + '"\n';
+    });
+
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'timesheet_' + todayStr() + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // --- SEND TIMESHEET EMAIL ---
+  document.getElementById('btnEmail').addEventListener('click', function(){
+    const punches = getPunches();
+    if(!punches.length){ alert('No punch data to send.'); return; }
+
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 14);
+    const cutoffStr = cutoff.toISOString();
+    const recent = punches.filter(function(p){ return p.clockIn >= cutoffStr; })
+      .sort(function(a,b){ return a.clockIn.localeCompare(b.clockIn); });
+
+    let totalMin = 0;
+    let body = 'TIMESHEET REPORT - ' + empName + '\n';
+    body += 'Generated: ' + new Date().toLocaleDateString() + '\n';
+    body += '================================\n\n';
+
+    recent.forEach(function(p){
+      const d = new Date(p.clockIn);
+      const dateStr = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+      const inTime = formatTime12(new Date(p.clockIn));
+      const outTime = p.clockOut ? formatTime12(new Date(p.clockOut)) : 'In progress';
+      let hours = '';
+      if(p.clockOut){
+        const diff = diffHoursMinutes(p.clockIn, p.clockOut);
+        hours = diff.h + 'h ' + diff.m + 'm';
+        totalMin += diff.total;
+      }
+      body += dateStr + '  |  ' + inTime + ' - ' + outTime + '  |  ' + hours + '  |  ' + (p.location||'') + '\n';
+    });
+
+    body += '\n================================\n';
+    body += 'TOTAL: ' + formatHM(Math.floor(totalMin/60), totalMin%60) + '\n';
+
+    const subject = 'Timesheet - ' + empName + ' - ' + todayStr();
+    const mailto = 'mailto:jdurand@jrdcompanies.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    window.location.href = mailto;
+  });
+
+  // --- INIT ---
+  refreshState();
+
+})();
+</script>
 <script src="../jack2-widget.js"></script>
 </body>
 </html>

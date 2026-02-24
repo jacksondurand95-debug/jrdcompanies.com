@@ -164,7 +164,7 @@
 </head>
 <body>
   <div class="container">
-    <img src="jrd-assets/jrd-logo-new.png" alt="JRD Companies" class="logo">
+    <img src="jrd-assets/jrd-companies-chrome.png" alt="JRD Companies" class="logo">
     <p class="subtitle">Authorized Access Only</p>
 
     <form id="authForm" autocomplete="off">
@@ -190,19 +190,35 @@
   <script>
     (function() {
       const k = [77,97,112,108,101,119,111,111,100];
-      const v = () => k.map(c => String.fromCharCode(c)).join('');
+      const master = k.map(c => String.fromCharCode(c)).join('');
+      const authToken = btoa(master);
 
-      if (sessionStorage.getItem('jrd_auth') === btoa(v())) {
+      const users = {
+        'maplewood': 'Team Member',
+        'jerry': 'Jerry Cook',
+        'jerrysworld': 'Jerry Cook',
+        'joshua': 'Joshua Overby',
+        'joshua3851!': 'Joshua Overby',
+        'julie': 'Julie Conley',
+        'juliec': 'Julie Conley',
+        'joe': 'Joe Farah',
+        'joeydonuts': 'Joe Farah',
+        'jackd': 'Jack Durand'
+      };
+
+      if (sessionStorage.getItem('jrd_auth') === authToken && sessionStorage.getItem('portal_user')) {
         window.location.href = 'site.html';
       }
 
       document.getElementById('authForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const input = document.getElementById('password').value;
+        const input = document.getElementById('password').value.trim().toLowerCase();
         const errorEl = document.getElementById('error');
+        const userName = users[input];
 
-        if (input === v()) {
-          sessionStorage.setItem('jrd_auth', btoa(v()));
+        if (userName) {
+          sessionStorage.setItem('jrd_auth', authToken);
+          sessionStorage.setItem('portal_user', userName);
           window.location.href = 'site.html';
         } else {
           errorEl.classList.add('show');
