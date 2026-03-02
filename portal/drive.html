@@ -79,7 +79,8 @@
     .company-card.durand:hover { border-color: rgba(138,143,154,.4); }
     .company-card.locked { opacity: .35; pointer-events: none; }
 
-    .company-logo { height: 60px; margin: 0 auto 18px; object-fit: contain; }
+    .company-logo { height: 60px; width: auto; max-width: 200px; margin: 0 auto 18px; object-fit: contain; }
+    .company-card.innout .company-logo { height: 80px; max-width: 220px; }
     .company-name {
       font-family: Oswald, sans-serif; font-size: 1.1rem;
       letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
@@ -204,8 +205,8 @@
 
     <div id="companySelect">
       <div class="intro">
-        <h2>2026 Budgets</h2>
-        <p>Select a company to view its budget</p>
+        <h2>Documents</h2>
+        <p>Select a company to view its documents</p>
       </div>
 
       <div class="company-grid">
@@ -214,7 +215,7 @@
           <div class="lock-icon" id="lock-holiday">
             <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           </div>
-          <img src="../jrd-assets/holiday-logo.png" alt="Holiday" class="company-logo">
+          <img src="../jrd-assets/holiday-logo-fixed.png" alt="Holiday" class="company-logo">
           <div class="company-name">Holiday Stationstores</div>
           <div class="company-loc">Store #3851 — Lakeville</div>
           <button class="select-btn orange">
