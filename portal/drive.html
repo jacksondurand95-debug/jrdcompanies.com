@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drive | JRD Companies Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="../jrd-assets/jrd-companies-chrome.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070707; --panel: #101010; --panel2: #151515;
+      --cream: #f3eee3; --cream2: #d7d1c5; --muted: #a9a295;
+      --orange: #e85d3b; --orange2: #c94a2a;
+      --green: #2d5a3d; --green2: #3a7a50;
+      --steel: #8a8f9a; --stroke: rgba(255,255,255,.08);
+      --radius: 14px; --radius2: 18px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Roboto, system-ui, sans-serif;
+      color: var(--cream); background: var(--bg);
+      min-height: 100vh; overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -2;
+      background:
+        radial-gradient(ellipse 120% 70% at 20% 20%, rgba(232,93,59,.14), transparent 55%),
+        radial-gradient(ellipse 90% 60% at 80% 70%, rgba(58,122,80,.16), transparent 50%),
+        radial-gradient(circle at 50% 50%, #0a0a0a 0%, #050505 65%);
+      background-attachment: fixed;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(900px, calc(100% - 48px)); margin: 0 auto; padding: 40px 0 80px; }
+
+    .page-header {
+      display: flex; align-items: center; gap: 20px; margin-bottom: 48px;
+    }
+    .back-btn {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,255,255,.04); border: 1px solid var(--stroke);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: all .2s;
+    }
+    .back-btn:hover { background: rgba(232,93,59,.1); border-color: rgba(232,93,59,.3); color: var(--orange); }
+    .page-title {
+      font-family: Oswald, sans-serif; font-size: 2rem;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--cream);
+    }
+
+    .intro { text-align: center; margin-bottom: 40px; }
+    .intro h2 {
+      font-family: Oswald, sans-serif; font-size: 1.5rem;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .intro p { color: var(--muted); font-size: 1rem; }
+
+    .company-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-bottom: 40px;
+    }
+    @media (max-width: 700px) { .company-grid { grid-template-columns: 1fr; } }
+
+    .company-card {
+      position: relative; padding: 32px 24px; border-radius: var(--radius2);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      border: 1px solid var(--stroke); text-align: center;
+      cursor: pointer; transition: transform .22s, border-color .22s, box-shadow .22s;
+      overflow: hidden;
+    }
+    .company-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    }
+    .company-card.holiday:hover { border-color: rgba(232,93,59,.4); }
+    .company-card.innout:hover { border-color: rgba(58,122,80,.4); }
+    .company-card.durand:hover { border-color: rgba(138,143,154,.4); }
+    .company-card.locked { opacity: .35; pointer-events: none; }
+
+    .company-logo { height: 60px; margin: 0 auto 18px; object-fit: contain; }
+    .company-name {
+      font-family: Oswald, sans-serif; font-size: 1.1rem;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .company-loc { color: var(--muted); font-size: .85rem; margin-bottom: 20px; }
+
+    .select-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 20px; border-radius: 10px; border: none;
+      font-family: Oswald, sans-serif; font-size: .9rem;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: #fff; cursor: pointer; transition: all .2s;
+    }
+    .select-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+    .select-btn.orange { background: linear-gradient(135deg, var(--orange), var(--orange2)); }
+    .select-btn.green { background: linear-gradient(135deg, var(--green), var(--green2)); }
+    .select-btn.steel { background: linear-gradient(135deg, #5a5e68, #44474f); }
+    .select-btn:hover { transform: scale(1.05); }
+
+    .lock-icon {
+      position: absolute; top: 12px; right: 12px;
+      color: var(--muted); opacity: .5;
+    }
+    .lock-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+    .unlock-icon { color: var(--green2); opacity: 1; }
+
+    /* Password Modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,.85); backdrop-filter: blur(12px);
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--panel); border: 1px solid var(--stroke);
+      border-radius: var(--radius2); padding: 40px;
+      max-width: 420px; width: 92%; text-align: center;
+      box-shadow: 0 25px 60px rgba(0,0,0,.6);
+    }
+    .modal h3 {
+      font-family: Oswald, sans-serif; font-size: 1.3rem;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .modal p { color: var(--muted); font-size: .9rem; margin-bottom: 24px; }
+    .modal input {
+      width: 100%; padding: 16px 20px; font-size: 1rem;
+      background: rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px; color: #fff; outline: none;
+      margin-bottom: 16px; transition: border-color .2s;
+    }
+    .modal input:focus { border-color: rgba(232,93,59,.5); }
+    .modal input::placeholder { color: rgba(255,255,255,.25); }
+    .modal-btns { display: flex; gap: 12px; }
+    .modal-btns button {
+      flex: 1; padding: 14px; border-radius: 10px; font-size: .95rem;
+      font-weight: 600; cursor: pointer; transition: all .2s;
+      font-family: Roboto, sans-serif;
+    }
+    .btn-cancel-modal {
+      background: transparent; border: 1px solid var(--stroke); color: var(--muted);
+    }
+    .btn-cancel-modal:hover { border-color: rgba(255,255,255,.2); color: var(--cream); }
+    .btn-unlock {
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      border: none; color: #fff;
+    }
+    .btn-unlock:hover { transform: scale(1.02); }
+    .modal-error {
+      color: #ff6b6b; font-size: .85rem; margin-top: 12px;
+      opacity: 0; transition: opacity .25s;
+    }
+    .modal-error.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="page-header">
+      <a class="back-btn" href="../site.html">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
+      <h1 class="page-title">Drive</h1>
+    </header>
+
+    <div id="companySelect">
+      <div class="intro">
+        <h2>2026 Budgets</h2>
+        <p>Select a company to view its budget</p>
+      </div>
+
+      <div class="company-grid">
+
+        <div class="company-card holiday" id="card-holiday" onclick="requestAccess('holiday')">
+          <div class="lock-icon" id="lock-holiday">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <img src="../jrd-assets/holiday-logo.png" alt="Holiday" class="company-logo">
+          <div class="company-name">Holiday Stationstores</div>
+          <div class="company-loc">Store #3851 — Lakeville</div>
+          <button class="select-btn orange">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            View Budget
+          </button>
+        </div>
+
+        <div class="company-card innout" id="card-innout" onclick="requestAccess('innout')">
+          <div class="lock-icon" id="lock-innout">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <img src="../jrd-assets/in-n-out-logo.png" alt="IN N OUT" class="company-logo">
+          <div class="company-name">IN N OUT Market</div>
+          <div class="company-loc">Maplewood</div>
+          <button class="select-btn green">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            View Budget
+          </button>
+        </div>
+
+        <div class="company-card durand" id="card-durand" onclick="requestAccess('durand')">
+          <div class="lock-icon" id="lock-durand">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <img src="../jrd-assets/durand-automotive-logo.png" alt="Durand Auto" class="company-logo">
+          <div class="company-name">Durand Auto</div>
+          <div class="company-loc">Maplewood</div>
+          <button class="select-btn steel">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            View Budget
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3 id="modalTitle">Enter Password</h3>
+      <p id="modalDesc">Manager access required</p>
+      <form onsubmit="checkPassword(event)">
+        <input type="password" id="modalPassword" placeholder="Enter your name" autocomplete="off" autofocus>
+        <div class="modal-btns">
+          <button type="button" class="btn-cancel-modal" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-unlock">Unlock</button>
+        </div>
+      </form>
+      <p class="modal-error" id="modalError">Access denied</p>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Budget file URLs (SharePoint document library)
+      const budgetUrls = {
+        holiday: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BBC83BA6B-4327-4CB8-963E-5700228FF774%7D&file=Holiday%202026%20Budget.xlsx&action=default&mobileredirect=true',
+        innout: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BA20B31EB-BF17-45BE-B55D-CCBB1B0296F8%7D&file=In%20N%20Out%202026%20Budget.xlsx&action=default&mobileredirect=true',
+        durand: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BA6A535D4-890B-4370-91DB-B550FE515E5B%7D&file=Durand%20Auto%202026%20Budget.xlsx&action=default&mobileredirect=true'
+      };
+
+      // Access control: which password unlocks which companies
+      const access = {
+        'joshua': ['holiday', 'innout', 'durand'],
+        'jack':   ['holiday', 'innout', 'durand'],
+        'julie':  ['holiday', 'innout', 'durand'],
+        'joe':    ['holiday', 'innout'],
+        'jerry':  ['durand', 'innout']
+      };
+
+      let targetCompany = null;
+      const unlocked = JSON.parse(sessionStorage.getItem('budget_unlocked') || '{}');
+
+      // Restore unlocked state
+      Object.keys(unlocked).forEach(c => markUnlocked(c));
+
+      window.requestAccess = function(company) {
+        if (unlocked[company]) {
+          window.open(budgetUrls[company], '_blank');
+          return;
+        }
+        targetCompany = company;
+        const names = { holiday: 'Holiday Stationstores', innout: 'IN N OUT Market', durand: 'Durand Auto' };
+        document.getElementById('modalTitle').textContent = names[company];
+        document.getElementById('modalDesc').textContent = 'Enter your name to unlock';
+        document.getElementById('modalPassword').value = '';
+        document.getElementById('modalError').classList.remove('show');
+        document.getElementById('modalOverlay').classList.add('show');
+        setTimeout(() => document.getElementById('modalPassword').focus(), 100);
+      };
+
+      window.checkPassword = function(e) {
+        e.preventDefault();
+        const input = document.getElementById('modalPassword').value.trim().toLowerCase();
+        const errorEl = document.getElementById('modalError');
+
+        const userAccess = access[input];
+        if (userAccess && userAccess.includes(targetCompany)) {
+          // Unlock all companies this user has access to
+          userAccess.forEach(c => {
+            unlocked[c] = true;
+            markUnlocked(c);
+          });
+          sessionStorage.setItem('budget_unlocked', JSON.stringify(unlocked));
+          closeModal();
+          // Open the requested budget
+          window.open(budgetUrls[targetCompany], '_blank');
+        } else {
+          errorEl.classList.add('show');
+          document.getElementById('modalPassword').value = '';
+          setTimeout(() => errorEl.classList.remove('show'), 2500);
+        }
+      };
+
+      window.closeModal = function() {
+        document.getElementById('modalOverlay').classList.remove('show');
+        targetCompany = null;
+      };
+
+      function markUnlocked(company) {
+        const lockEl = document.getElementById('lock-' + company);
+        if (lockEl) {
+          lockEl.innerHTML = '<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 5-5 5 5 0 0 1 5 5"/></svg>';
+          lockEl.classList.add('unlock-icon');
+        }
+        const card = document.getElementById('card-' + company);
+        if (card) card.classList.remove('locked');
+      }
+
+      // Close modal on overlay click
+      document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      // Auth check
+      if (!sessionStorage.getItem('jrd_auth')) {
+        window.location.href = '../index.html';
+      }
+    })();
+  </script>
+</body>
+</html>
