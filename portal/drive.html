@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="../jrd-assets/jrd-companies-chrome.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #070707; --panel: #101010; --panel2: #151515;
@@ -106,6 +106,44 @@
     .lock-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
     .unlock-icon { color: var(--green2); opacity: 1; }
 
+    /* Spreadsheet viewer */
+    .viewer-wrap {
+      display: none; margin-top: 24px;
+    }
+    .viewer-wrap.show { display: block; }
+    .viewer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; background: var(--panel); border: 1px solid var(--stroke);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .viewer-title {
+      font-family: Oswald, sans-serif; font-size: 1.1rem;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .viewer-close {
+      background: rgba(255,255,255,.06); border: 1px solid var(--stroke);
+      color: var(--muted); padding: 8px 16px; border-radius: 8px;
+      cursor: pointer; font-size: .85rem; transition: all .2s;
+    }
+    .viewer-close:hover { background: rgba(232,93,59,.15); color: var(--orange); }
+    .viewer-frame {
+      width: 100%; height: 70vh; border: 1px solid var(--stroke);
+      border-top: none; border-radius: 0 0 var(--radius) var(--radius);
+      background: #fff;
+    }
+    .viewer-actions {
+      display: flex; gap: 12px; margin-top: 12px; justify-content: center;
+    }
+    .viewer-actions a {
+      padding: 10px 20px; border-radius: 8px; font-size: .85rem;
+      font-weight: 500; transition: all .2s; border: 1px solid var(--stroke);
+      color: var(--cream); background: rgba(255,255,255,.04);
+    }
+    .viewer-actions a:hover { background: rgba(232,93,59,.1); border-color: rgba(232,93,59,.3); }
+
+    /* Full width when viewer is open */
+    .wrap.expanded { width: min(1400px, calc(100% - 32px)); }
+
     /* Password Modal */
     .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 999;
@@ -155,7 +193,7 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="wrap" id="mainWrap">
 
     <header class="page-header">
       <a class="back-btn" href="../site.html">
@@ -214,6 +252,18 @@
       </div>
     </div>
 
+    <!-- Embedded spreadsheet viewer -->
+    <div class="viewer-wrap" id="viewerWrap">
+      <div class="viewer-header">
+        <div class="viewer-title" id="viewerTitle">Budget</div>
+        <button class="viewer-close" onclick="closeViewer()">Close</button>
+      </div>
+      <iframe class="viewer-frame" id="viewerFrame" src="about:blank" frameborder="0"></iframe>
+      <div class="viewer-actions">
+        <a id="viewerOpenNew" href="#" target="_blank">Open in Excel Online</a>
+      </div>
+    </div>
+
   </div>
 
   <!-- Password Modal -->
@@ -234,14 +284,26 @@
 
   <script>
     (function() {
-      // Budget file URLs (direct Excel Online edit links)
-      const budgetUrls = {
-        holiday: 'https://jrdcompanies.sharepoint.com/:x:/s/jrdcompanies/IQANfDjEummxTbd2-pGx_7JRAWqIXg5J3c0s56c9rwvREQ4',
-        innout: 'https://jrdcompanies.sharepoint.com/:x:/s/jrdcompanies/IQA88_yj9ilzSbaD2cHgO6rRAbB1Dp4bn7XihYVf6WJ6JZs',
-        durand: 'https://jrdcompanies.sharepoint.com/:x:/s/jrdcompanies/IQBCL6nA3WczSL-GkkrWCgjWAWEgHHQzHxLgVeohHeYhvxo'
+      // Budget file embed URLs (action=embedview for iframe, action=default for full editor)
+      const budgetFiles = {
+        holiday: {
+          embed: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BC4387C0D-69BA-4DB1-B776-FA91B1FFB251%7D&file=Holiday%202026%20Budget%20v2.xlsx&action=embedview',
+          edit: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BC4387C0D-69BA-4DB1-B776-FA91B1FFB251%7D&file=Holiday%202026%20Budget%20v2.xlsx&action=default',
+          name: 'Holiday Stationstores'
+        },
+        innout: {
+          embed: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BA3FCF33C-29F6-4973-B683-D9C1E03BAAD1%7D&file=In%20N%20Out%202026%20Budget.xlsx&action=embedview',
+          edit: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BA3FCF33C-29F6-4973-B683-D9C1E03BAAD1%7D&file=In%20N%20Out%202026%20Budget.xlsx&action=default',
+          name: 'IN N OUT Market'
+        },
+        durand: {
+          embed: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BC0A92F42-67DD-4833-BF86-924AD60A08D6%7D&file=Durand%20Auto%202026%20Budget.xlsx&action=embedview',
+          edit: 'https://jrdcompanies.sharepoint.com/sites/jrdcompanies/_layouts/15/Doc.aspx?sourcedoc=%7BC0A92F42-67DD-4833-BF86-924AD60A08D6%7D&file=Durand%20Auto%202026%20Budget.xlsx&action=default',
+          name: 'Durand Auto'
+        }
       };
 
-      // Access control: which password unlocks which companies
+      // Access control
       const access = {
         'joshua': ['holiday', 'innout', 'durand'],
         'jack':   ['holiday', 'innout', 'durand'],
@@ -258,7 +320,7 @@
 
       window.requestAccess = function(company) {
         if (unlocked[company]) {
-          window.open(budgetUrls[company], '_blank');
+          openViewer(company);
           return;
         }
         targetCompany = company;
@@ -278,20 +340,34 @@
 
         const userAccess = access[input];
         if (userAccess && userAccess.includes(targetCompany)) {
-          // Unlock all companies this user has access to
           userAccess.forEach(c => {
             unlocked[c] = true;
             markUnlocked(c);
           });
           sessionStorage.setItem('budget_unlocked', JSON.stringify(unlocked));
           closeModal();
-          // Open the requested budget
-          window.open(budgetUrls[targetCompany], '_blank');
+          openViewer(targetCompany);
         } else {
           errorEl.classList.add('show');
           document.getElementById('modalPassword').value = '';
           setTimeout(() => errorEl.classList.remove('show'), 2500);
         }
+      };
+
+      function openViewer(company) {
+        const file = budgetFiles[company];
+        document.getElementById('viewerTitle').textContent = file.name + ' — 2026 Budget';
+        document.getElementById('viewerFrame').src = file.embed;
+        document.getElementById('viewerOpenNew').href = file.edit;
+        document.getElementById('viewerWrap').classList.add('show');
+        document.getElementById('mainWrap').classList.add('expanded');
+        document.getElementById('viewerWrap').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      window.closeViewer = function() {
+        document.getElementById('viewerFrame').src = 'about:blank';
+        document.getElementById('viewerWrap').classList.remove('show');
+        document.getElementById('mainWrap').classList.remove('expanded');
       };
 
       window.closeModal = function() {
@@ -305,16 +381,13 @@
           lockEl.innerHTML = '<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 5-5 5 5 0 0 1 5 5"/></svg>';
           lockEl.classList.add('unlock-icon');
         }
-        const card = document.getElementById('card-' + company);
+        var card = document.getElementById('card-' + company);
         if (card) card.classList.remove('locked');
       }
 
-      // Close modal on overlay click
       document.getElementById('modalOverlay').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
       });
-
-      // Close on Escape
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeModal();
       });
